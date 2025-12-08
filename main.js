@@ -180,147 +180,508 @@ const levelResults = [
 // 데이터: AI 상식 퀴즈
 // ============================================
 const quizQuestions = [
-    {
-        text: "MCP(Model Context Protocol)는 무엇을 위한 프로토콜인가요?",
-        options: [
-            "AI 모델의 학습 속도를 높이는 기술",
-            "AI가 외부 데이터와 도구에 접근할 수 있게 하는 표준 프로토콜",
-            "AI 모델의 크기를 압축하는 방법",
-            "AI 간의 대화를 중재하는 시스템"
-        ],
-        correctIndex: 1,
-        explanation: "MCP는 AI 모델이 외부 시스템, 데이터베이스, API 등에 안전하게 접근할 수 있도록 하는 표준 프로토콜이에요. Claude를 비롯한 여러 AI가 이를 지원하기 시작했답니다!"
-    },
-    {
-        text: "n8n은 어떤 도구인가요?",
-        options: [
-            "AI 모델을 학습시키는 플랫폼",
-            "워크플로우 자동화 도구",
-            "코드 에디터",
-            "디자인 협업 툴"
-        ],
-        correctIndex: 1,
-        explanation: "n8n은 노코드/로우코드 방식의 워크플로우 자동화 도구예요. 여러 앱과 서비스를 연결해서 반복 작업을 자동화할 수 있어요. AI API와도 연동이 가능하답니다!"
-    },
-    {
-        text: "생성형 AI의 '환각(Hallucination)'이란?",
-        options: [
-            "AI가 사용자의 감정을 잘못 인식하는 현상",
-            "AI가 사실이 아닌 정보를 그럴듯하게 생성하는 현상",
-            "AI가 이미지를 왜곡해서 보여주는 버그",
-            "AI 서버가 과부하될 때 나타나는 오류"
-        ],
-        correctIndex: 1,
-        explanation: "환각은 AI가 학습 데이터에 없거나 사실이 아닌 정보를 마치 사실인 것처럼 자신 있게 생성하는 현상이에요. 그래서 중요한 정보는 반드시 검증해야 해요!"
-    },
-    {
-        text: "프롬프트 엔지니어링에서 'Few-shot Learning'이란?",
-        options: [
-            "AI에게 짧은 문장만 입력하는 기법",
-            "AI에게 몇 가지 예시를 제공해서 패턴을 학습시키는 방법",
-            "AI 모델의 학습 시간을 줄이는 기술",
-            "적은 데이터로 AI를 처음부터 학습시키는 방법"
-        ],
-        correctIndex: 1,
-        explanation: "Few-shot Learning은 AI에게 2~3개의 예시를 보여주고, 그 패턴을 따라 답변하게 하는 프롬프트 기법이에요. 원하는 형식의 답변을 얻기에 아주 효과적이랍니다!"
-    },
-    {
-        text: "AI API를 사용한다는 것은 무엇을 의미하나요?",
-        options: [
-            "AI 웹사이트에서 직접 채팅하는 것",
-            "프로그램이나 앱에서 AI 기능을 코드로 호출하는 것",
-            "AI 모델을 내 컴퓨터에 다운로드하는 것",
-            "AI의 소스코드를 수정하는 것"
-        ],
-        correctIndex: 1,
-        explanation: "AI API는 코드를 통해 AI 서비스를 호출할 수 있게 해주는 인터페이스예요. 이를 활용하면 내 앱이나 서비스에 AI 기능을 통합할 수 있답니다!"
-    },
-    {
-        text: "벡터 데이터베이스(Vector DB)는 주로 무엇에 사용되나요?",
-        options: [
-            "숫자 데이터만 저장하는 DB",
-            "의미적으로 유사한 정보를 빠르게 검색하기 위한 DB",
-            "그래프를 그리기 위한 데이터 저장소",
-            "AI 모델의 가중치를 저장하는 곳"
-        ],
-        correctIndex: 1,
-        explanation: "벡터 DB는 텍스트나 이미지를 수치 벡터로 변환해서 저장하고, 의미가 유사한 데이터를 빠르게 찾을 수 있게 해줘요. AI 검색이나 추천 시스템에 많이 쓰인답니다!"
-    },
-    {
-        text: "GPT에서 'Temperature' 파라미터는 무엇을 조절하나요?",
-        options: [
-            "AI의 응답 속도",
-            "AI 응답의 창의성과 무작위성",
-            "AI가 사용하는 메모리 크기",
-            "AI의 정확도"
-        ],
-        correctIndex: 1,
-        explanation: "Temperature는 AI 응답의 창의성을 조절하는 값이에요. 낮을수록(0에 가까울수록) 일관되고 예측 가능한 답변을, 높을수록(1에 가까울수록) 창의적이고 다양한 답변을 생성해요!"
-    },
-    {
-        text: "RAG(Retrieval-Augmented Generation)란?",
-        options: [
-            "AI 모델의 크기를 줄이는 기술",
-            "외부 문서를 검색해서 AI 답변에 활용하는 방법",
-            "AI를 더 빠르게 학습시키는 알고리즘",
-            "이미지 생성 AI의 한 종류"
-        ],
-        correctIndex: 1,
-        explanation: "RAG는 AI가 답변하기 전에 관련 문서나 데이터를 먼저 검색해서 참고하는 기법이에요. 이를 통해 더 정확하고 최신의 정보를 제공할 수 있답니다!"
-    },
-    {
-        text: "LangChain은 무엇을 위한 도구인가요?",
-        options: [
-            "번역 전문 AI 서비스",
-            "LLM 애플리케이션 개발을 위한 프레임워크",
-            "블록체인 기반 AI 플랫폼",
-            "언어 학습 앱"
-        ],
-        correctIndex: 1,
-        explanation: "LangChain은 LLM(대규모 언어 모델)을 활용한 애플리케이션을 쉽게 만들 수 있게 해주는 프레임워크예요. 여러 AI 도구와 데이터를 연결해서 복잡한 작업을 구현할 수 있어요!"
-    },
-    {
-        text: "AI의 'Context Window'란?",
-        options: [
-            "AI가 화면에 표시할 수 있는 글자 수",
-            "AI가 한 번에 기억하고 처리할 수 있는 텍스트 범위",
-            "AI 학습에 사용된 데이터의 시간 범위",
-            "AI가 답변을 생성하는 데 걸리는 시간"
-        ],
-        correctIndex: 1,
-        explanation: "Context Window는 AI가 한 번에 입력받고 처리할 수 있는 텍스트의 최대 길이예요. 이 범위를 넘어서면 이전 내용을 '잊어버리게' 된답니다!"
-    },
-    {
-        text: "오픈소스 LLM의 장점이 아닌 것은?",
-        options: [
-            "코드를 직접 확인하고 수정할 수 있다",
-            "상업적 AI보다 항상 성능이 뛰어나다",
-            "내 서버에서 직접 운영할 수 있다",
-            "커스터마이징이 자유롭다"
-        ],
-        correctIndex: 1,
-        explanation: "오픈소스 LLM은 투명성과 커스터마이징이 장점이지만, 성능은 모델마다 다르고 상업적 AI(GPT-4, Claude 등)보다 떨어질 수 있어요. 하지만 특정 용도에선 충분히 효과적이에요!"
-    },
-    {
-        text: "AI 에이전트(Agent)란 무엇인가요?",
-        options: [
-            "AI 모델을 판매하는 영업 직원",
-            "스스로 계획을 세우고 도구를 사용해 작업을 수행하는 AI",
-            "AI를 학습시키는 데이터 라벨러",
-            "AI 서버를 관리하는 프로그램"
-        ],
-        correctIndex: 1,
-        explanation: "AI 에이전트는 단순히 질문에 답하는 것을 넘어, 목표를 이해하고 계획을 세우며 필요한 도구(검색, 계산기, API 등)를 스스로 선택해서 사용하는 고급 AI 시스템이에요!"
-    }
+  {
+    text: "MCP(Model Context Protocol)는 주로 무엇을 위한 프로토콜인가요?",
+    options: [
+      "AI가 이미지를 그리는 표준 포맷",
+      "AI가 외부 데이터·도구·API에 안전하게 접근하도록 돕는 표준",
+      "여러 AI 모델을 동시에 학습시키는 분산 학습 방식",
+      "브라우저 안에서만 동작하는 경량 모델 규격"
+    ],
+    correctIndex: 1,
+    explanation: "MCP는 AI가 데이터베이스, 캘린더, 사내 시스템 같은 외부 리소스에 표준화된 방식으로 접근할 수 있게 해주는 프로토콜이에요."
+  },
+  {
+    text: "n8n은 어떤 도구인가요?",
+    options: [
+      "딥러닝 전용 GPU 드라이버",
+      "여러 서비스와 API를 이어 붙여 자동화 워크플로를 만드는 도구",
+      "이미지 생성 AI 모델",
+      "데이터베이스 백업 전용 툴"
+    ],
+    correctIndex: 1,
+    explanation: "n8n은 구글 시트, 슬랙, 노션, AI API 등을 노드로 이어 붙여 자동화 플로우를 만드는 오픈소스 워크플로 도구예요."
+  },
+  {
+    text: "생성형 AI에서 '환각(hallucination)'은 무엇을 의미하나요?",
+    options: [
+      "AI가 이미지를 더 선명하게 만드는 기능",
+      "AI가 사실이 아닌 내용을 그럴듯하게 만들어내는 현상",
+      "AI가 사람의 감정을 인식하는 기능",
+      "AI가 멀티모달 입력을 처리하는 능력"
+    ],
+    correctIndex: 1,
+    explanation: "환각은 AI가 근거 없는 내용을 사실처럼 만들어내는 현상이에요. 그래서 중요한 정보는 항상 교차 검증이 필요해요."
+  },
+  {
+    text: "프롬프트 엔지니어링의 핵심 목적은 무엇인가요?",
+    options: [
+      "모델 파라미터 수를 줄이는 것",
+      "프롬프트를 잘 설계해서 원하는 결과를 더 안정적으로 얻는 것",
+      "GPU 사용량을 줄이는 것",
+      "데이터를 더 많이 수집하는 것"
+    ],
+    correctIndex: 1,
+    explanation: "프롬프트 엔지니어링은 AI에게 주는 지시문을 설계·튜닝해서 더 원하는 방향의 답을 뽑는 기술이에요."
+  },
+  {
+    text: "RAG(Retrieval-Augmented Generation)의 특징은?",
+    options: [
+      "이미지 해상도를 높여준다",
+      "외부 문서를 검색해와서 그 내용을 참고해 답변을 생성한다",
+      "모델을 더 작게 압축한다",
+      "GPU 없이도 학습이 가능하게 한다"
+    ],
+    correctIndex: 1,
+    explanation: "RAG는 질문에 답하기 전에 벡터DB나 검색 시스템에서 관련 문서를 찾아와 그 내용을 기반으로 답변을 만드는 방식이에요."
+  },
+  {
+    text: "벡터 데이터베이스(Vector DB)는 어떤 용도로 주로 사용되나요?",
+    options: [
+      "관계형 데이터 정규화",
+      "고정 길이 정수만 저장",
+      "텍스트·이미지 임베딩을 저장하고 비슷한 것끼리 빠르게 찾기",
+      "트랜잭션 롤백 전용 기능"
+    ],
+    correctIndex: 2,
+    explanation: "벡터 DB는 임베딩(숫자 벡터)을 저장해 두고, 특정 벡터와 가장 비슷한 벡터들을 빠르게 찾아주는 데 특화되어 있어요."
+  },
+  {
+    text: "임베딩(Embedding)은 무엇을 의미하나요?",
+    options: [
+      "데이터를 압축해 ZIP 파일로 만드는 과정",
+      "텍스트나 이미지를 고정 길이 숫자 벡터로 표현하는 것",
+      "모델을 서버에 배포하는 것",
+      "GPU 메모리를 늘리는 기술"
+    ],
+    correctIndex: 1,
+    explanation: "임베딩은 텍스트, 이미지 같은 정보를 숫자 벡터로 바꾸는 표현 방식이에요. 비슷한 의미일수록 벡터 간 거리가 가까워집니다."
+  },
+  {
+    text: "API를 통해 AI 모델을 호출하는 가장 큰 장점은?",
+    options: [
+      "모델을 직접 학습하지 않고도 서비스를 만들 수 있다",
+      "GPU를 반드시 함께 제공받는다",
+      "로컬에서만 사용할 수 있다",
+      "인터넷 연결 없이 동작한다"
+    ],
+    correctIndex: 0,
+    explanation: "API를 쓰면 모델 학습·인프라 관리를 신경 쓰지 않고, HTTP 요청만으로 AI 기능을 서비스에 붙일 수 있어요."
+  },
+  {
+    text: "Temperature 파라미터가 0에 가까울수록 어떤 응답이 나오나요?",
+    options: [
+      "더 창의적이고 다양해진다",
+      "더 무작위성이 커진다",
+      "더 일관되고 예측 가능한 답변이 나온다",
+      "이미지 품질이 높아진다"
+    ],
+    correctIndex: 2,
+    explanation: "Temperature를 낮추면 모델이 확률이 높은 답을 선호해서, 더 일관되고 비슷한 답을 내놓게 돼요."
+  },
+  {
+    text: "프롬프트에 '너는 이제부터 ○○ 역할이다' 같은 문장을 넣는 이유는?",
+    options: [
+      "모델 속도를 높이기 위해",
+      "모델이 사용할 GPU 종류를 바꾸기 위해",
+      "모델이 답변할 관점과 톤을 명확하게 잡아주기 위해",
+      "모델 크기를 줄이기 위해"
+    ],
+    correctIndex: 2,
+    explanation: "역할 지정을 해두면 모델이 어떤 기준으로 생각하고 답해야 하는지 더 명확해져서 결과 품질이 좋아지는 경우가 많아요."
+  },
+  {
+    text: "ChatGPT, Claude, Gemini 같은 서비스의 공통점은?",
+    options: [
+      "모두 이미지 생성 전용 서비스이다",
+      "모두 LLM 기반 대화형 AI 서비스이다",
+      "모두 오프라인 전용 프로그램이다",
+      "모두 동일한 회사에서 만든 서비스이다"
+    ],
+    correctIndex: 1,
+    explanation: "이 서비스들은 모두 대규모 언어 모델(LLM)을 기반으로 한 대화형 AI 서비스예요."
+  },
+  {
+    text: "AI 서비스에서 '토큰(token)'은 주로 무엇을 의미하나요?",
+    options: [
+      "GPU 개수",
+      "API 키 문자열",
+      "텍스트를 잘게 쪼갠 최소 단위",
+      "암호화된 비밀번호"
+    ],
+    correctIndex: 2,
+    explanation: "토큰은 텍스트를 모델이 처리하기 좋은 단위로 쪼갠 조각이에요. 보통 글자, 단어, 서브워드 단위로 나눕니다."
+  },
+  {
+    text: "LLM이 긴 대화를 모두 기억하지 못하는 이유와 가장 관련 깊은 것은?",
+    options: [
+      "GPU 온도",
+      "컨텍스트 윈도우 길이 제한",
+      "프롬프트 엔지니어링 여부",
+      "네트워크 속도"
+    ],
+    correctIndex: 1,
+    explanation: "LLM은 한 번에 볼 수 있는 토큰 수(컨텍스트 윈도우)가 정해져 있어서, 너무 길어지면 앞부분이 잘려 나가요."
+  },
+  {
+    text: "AI가 개인정보를 학습 데이터로 쓰지 못하게 하려면 무엇을 조심해야 할까요?",
+    options: [
+      "프롬프트에 영어만 쓰기",
+      "친구 이름을 많이 적기",
+      "민감한 정보를 직접 입력하지 않기",
+      "질문을 짧게 쓰기"
+    ],
+    correctIndex: 2,
+    explanation: "특히 공용/클라우드 서비스에서는 주민번호, 계좌, 구체적인 주소 같은 민감한 개인정보를 직접 입력하지 않는 게 중요해요."
+  },
+  {
+    text: "오픈소스 LLM을 로컬에서 돌릴 때 주로 필요한 것은?",
+    options: [
+      "고성능 GPU 또는 충분한 RAM",
+      "블루투스 이어폰",
+      "대형 프린터",
+      "고음질 스피커"
+    ],
+    correctIndex: 0,
+    explanation: "모델 크기에 따라 다르지만, 로컬 LLM은 GPU나 RAM 같은 하드웨어 자원을 꽤 많이 요구해요."
+  },
+  {
+    text: "Zapier, Make, n8n 같은 도구들의 공통 목적은?",
+    options: [
+      "브라우저 성능 측정",
+      "여러 웹 서비스와 앱을 자동화 워크플로로 연결",
+      "이미지 필터 적용",
+      "동영상 편집"
+    ],
+    correctIndex: 1,
+    explanation: "이 도구들은 서로 다른 서비스들을 연결해서, 조건에 따라 자동으로 작업이 실행되도록 만드는 자동화 플랫폼이에요."
+  },
+  {
+    text: "프롬프트에 예시 입력/출력을 같이 넣어주는 기법은?",
+    options: [
+      "Zero-shot",
+      "One-shot / Few-shot 프롬프트",
+      "Temperature 조절",
+      "RAG"
+    ],
+    correctIndex: 1,
+    explanation: "모델에게 예시 한두 개를 같이 보여주고 '이 패턴대로 해'라고 하는 방식을 One-shot, Few-shot 프롬프트라고 불러요."
+  },
+  {
+    text: "AI가 잘못된 정보를 말했을 때 가장 좋은 대응은?",
+    options: [
+      "그대로 믿고 바로 실행한다",
+      "AI에게 화를 낸다",
+      "다른 자료나 공식 문서를 통해 교차 검증한다",
+      "프롬프트를 더 짧게 바꾼다"
+    ],
+    correctIndex: 2,
+    explanation: "특히 돈·건강·법률 관련 내용은 반드시 공식 문서나 전문가 자료와 함께 확인해야 해요."
+  },
+  {
+    text: "이미지 생성 AI에서 '프롬프트'의 역할은?",
+    options: [
+      "GPU 개수를 지정하는 것",
+      "이미지의 내용과 스타일을 설명하는 텍스트 지시문",
+      "파일 저장 경로 지정",
+      "이미지 크기를 압축하는 것"
+    ],
+    correctIndex: 1,
+    explanation: "텍스트 프롬프트가 그림의 내용·구도·스타일을 결정하는 핵심이라, 묘사를 어떻게 하느냐가 결과에 큰 영향을 줘요."
+  },
+  {
+    text: "AI를 업무에 도입할 때 가장 먼저 해야 할 일은?",
+    options: [
+      "직원 모두를 개발자로 재교육",
+      "AI가 완전히 대체할 사람을 정하기",
+      "반복적인 업무·문서 작업 등 후보를 찾아보는 것",
+      "GPU 서버부터 구매하는 것"
+    ],
+    correctIndex: 2,
+    explanation: "처음에는 반복적이고 규칙 기반인 업무부터 AI로 보조하게 하면 리스크가 적고 효과를 보기 좋아요."
+  },
+  {
+    text: "파인튜닝(fine-tuning)은 무엇을 의미하나요?",
+    options: [
+      "모델의 모든 가중치를 처음부터 다시 학습하는 것",
+      "이미 학습된 모델을 특정 도메인 데이터로 추가 학습시키는 것",
+      "GPU 성능을 튜닝하는 것",
+      "데이터를 전처리하는 것"
+    ],
+    correctIndex: 1,
+    explanation: "파인튜닝은 이미 기본 능력이 있는 모델에 특정 분야 데이터로 추가 학습을 시켜서, 그 분야에 더 잘 맞게 만드는 과정이에요."
+  },
+  {
+    text: "AI로 코드 리뷰를 받을 때 주의할 점은?",
+    options: [
+      "AI의 말을 100% 그대로 믿고 반영한다",
+      "보안·성능 이슈는 사람이 한 번 더 검토한다",
+      "테스트 코드는 필요 없다",
+      "주석은 전혀 쓰지 않는다"
+    ],
+    correctIndex: 1,
+    explanation: "AI가 제안한 코드도 버그나 보안 구멍이 있을 수 있어서, 중요한 부분은 반드시 사람이 한 번 더 확인해야 해요."
+  },
+  {
+    text: "LLM 기반 챗봇이 대화 중간에 맥락을 잃어버렸을 때 유용한 방법은?",
+    options: [
+      "브라우저를 재설치한다",
+      "대화를 완전히 초기화하고 다시 시작한다",
+      "중요한 정보만 정리해서 다시 프롬프트에 요약해준다",
+      "온도를 1.0으로 올린다"
+    ],
+    correctIndex: 2,
+    explanation: "대화가 너무 길어졌다면 핵심만 요약해서 다시 프롬프트에 넣어주면 모델이 맥락을 더 잘 잡을 수 있어요."
+  },
+  {
+    text: "AI를 이용한 자동 번역의 한계로 적절한 것은?",
+    options: [
+      "숫자를 번역하지 못한다",
+      "언어마다 글자 수가 달라 레이아웃이 깨질 수 있다",
+      "모든 전문 용어를 완벽하게 처리한다",
+      "문맥 없이도 항상 정확하다"
+    ],
+    correctIndex: 1,
+    explanation: "UI 번역에서는 글자 수나 줄바꿈 때문에 디자인이 깨질 수 있고, 문맥 없는 문장 번역은 오역이 나기 쉬워요."
+  },
+  {
+    text: "AI가 그린 이미지나 쓴 글을 사용할 때 저작권 측면에서 중요한 것은?",
+    options: [
+      "AI가 만들면 모두 저작권 없음",
+      "서비스 약관과 사용 가능 범위를 확인하는 것",
+      "PNG만 쓰면 문제 없음",
+      "이미지만 문제가 되고 텍스트는 항상 자유롭게 사용 가능"
+    ],
+    correctIndex: 1,
+    explanation: "상업적 이용 가능 여부, 출처 표기 의무 등은 서비스 약관마다 다르기 때문에 반드시 확인해야 해요."
+  },
+  {
+    text: "프롬프트에 '단계별로 생각해줘' 같은 문장을 넣는 이유는?",
+    options: [
+      "응답 속도를 느리게 하려고",
+      "모델이 중간 추론 과정을 더 잘 드러내게 해서 실수를 줄이기 위해",
+      "이미지 해상도를 높이기 위해",
+      "토큰 비용을 줄이기 위해"
+    ],
+    correctIndex: 1,
+    explanation: "단계별로 설명하게 하면 모델이 한 번에 점프하지 않고 중간 과정을 거쳐가서, 논리적인 오류를 줄이는 데 도움이 돼요."
+  },
+  {
+    text: "AI가 추천하는 투자·의료·법률 정보에 대해 올바른 태도는?",
+    options: [
+      "전문가 의견과 동일하다고 믿는다",
+      "참고 자료로만 보고 최종 판단은 전문가와 상의한다",
+      "항상 틀렸다고 생각한다",
+      "AI가 말한 대로 바로 실행한다"
+    ],
+    correctIndex: 1,
+    explanation: "고위험 분야에서는 AI 답변을 참고 자료 정도로만 보고, 최종 결정은 전문가나 공식 채널을 통해 하는 게 안전해요."
+  },
+  {
+    text: "AI 오디오 TTS(Text-to-Speech)를 쓸 때 흔한 활용 예시는?",
+    options: [
+      "하드디스크 포맷",
+      "문서·스크립트를 자연스러운 음성으로 읽어주기",
+      "네트워크 트래픽 줄이기",
+      "GPU 온도 측정"
+    ],
+    correctIndex: 1,
+    explanation: "TTS는 글로 된 내용을 자연스러운 음성으로 읽어주는 데 많이 쓰이고, 영상 나레이션에도 자주 활용돼요."
+  },
+  {
+    text: "프롬프트에 '답변 전에 꼭 모르는 부분은 모른다고 말해줘' 라고 적는 이유는?",
+    options: [
+      "모델 속도를 늘리기 위해",
+      "환각을 줄이고, 근거 없는 추측을 덜 하도록 유도하기 위해",
+      "이미지 품질을 위해",
+      "토큰 수를 늘리기 위해"
+    ],
+    correctIndex: 1,
+    explanation: "이렇게 요청하면 모델이 확신 없는 내용을 확정적으로 말하는 걸 조금은 줄일 수 있어요."
+  },
+  {
+    text: "멀티모달 AI란 무엇을 의미하나요?",
+    options: [
+      "여러 GPU를 동시에 쓰는 모델",
+      "텍스트, 이미지, 오디오 등 여러 형태의 입력을 함께 처리하는 AI",
+      "멀티코어 CPU를 사용하는 AI",
+      "여러 언어를 지원하는 번역기"
+    ],
+    correctIndex: 1,
+    explanation: "멀티모달 AI는 텍스트만이 아니라 이미지, 소리, 영상 등 다양한 형태의 데이터를 함께 이해하는 모델을 말해요."
+  },
+  {
+    text: "AI 모델을 직접 학습시킬 때 가장 크게 드는 비용은 보통 무엇인가요?",
+    options: [
+      "디자인 툴 구독비",
+      "GPU 인프라와 전기 비용",
+      "도메인 구매비",
+      "마우스·키보드 교체비"
+    ],
+    correctIndex: 1,
+    explanation: "대규모 모델 학습은 GPU 서버 비용과 전력 소모가 매우 크기 때문에, 대부분은 API 사용이 더 경제적이에요."
+  },
+  {
+    text: "노코드/로우코드 AI 서비스의 장점은?",
+    options: [
+      "프로그래밍 언어를 전혀 몰라도 아이디어를 테스트해볼 수 있다",
+      "항상 무료다",
+      "GPU를 제공한다",
+      "보안 검토가 필요 없다"
+    ],
+    correctIndex: 0,
+    explanation: "노코드 툴은 드래그&드롭 위주라, 개발자가 아니어도 프로토타입을 빠르게 만들어 볼 수 있는 게 가장 큰 장점이에요."
+  },
+  {
+    text: "AI 자동 요약 기능을 사용할 때 주의할 점은?",
+    options: [
+      "항상 원문보다 더 정확하다",
+      "중요한 뉘앙스나 조건이 빠질 수 있어서 원문도 함께 확인해야 한다",
+      "원문을 삭제해도 된다",
+      "요약은 숫자를 항상 정확히 반영한다"
+    ],
+    correctIndex: 1,
+    explanation: "요약 과정에서 조건·예외·단서가 빠질 수 있어서, 중요한 문서는 원문과 함께 비교하면서 보는 게 안전해요."
+  },
+  {
+    text: "LLM 기반 챗봇을 서비스에 붙일 때, 대화 로그를 저장할 경우 가장 중요한 것은?",
+    options: [
+      "글자 수 제한",
+      "배경색",
+      "사용자 개인정보·민감 정보 보호",
+      "폰트 종류"
+    ],
+    correctIndex: 2,
+    explanation: "대화 내용 안에 개인정보가 들어갈 수 있어서, 암호화·익명화·보존 기간 등 개인정보 보호 정책이 중요해요."
+  },
+  {
+    text: "AI로 생성한 콘텐츠를 팀에 공유할 때 좋은 태도는?",
+    options: [
+      "AI가 만들었다고 숨긴다",
+      "초안/아이디어로 소개하고, 함께 검토·수정한다",
+      "그대로 최종 결과물로 쓴다",
+      "비판을 허용하지 않는다"
+    ],
+    correctIndex: 1,
+    explanation: "AI가 만든 내용은 초안으로 보고, 사람과 함께 검토·수정하는 협업 방식이 가장 현실적이고 안전해요."
+  },
+  {
+    text: "벡터 검색 기반 챗봇에서 '검색 실패'가 자주 일어나는 이유로 가장 그럴듯한 것은?",
+    options: [
+      "폰트가 마음에 안 들어서",
+      "임베딩을 만들 때 언어가 섞여 있거나, 문서 전처리가 잘 안 되어 있어서",
+      "GPU 온도가 낮아서",
+      "브라우저 캐시가 많아서"
+    ],
+    correctIndex: 1,
+    explanation: "전처리가 부실하거나 언어가 뒤섞여 있으면 임베딩 품질이 떨어져서, 연관 문서를 제대로 못 찾는 경우가 많아요."
+  },
+  {
+    text: "프롬프트에서 '역할·목표·제약·출력 형식'을 명확히 적어주는 이유는?",
+    options: [
+      "토큰을 더 많이 쓰려고",
+      "모델이 해야 할 일과 하지 말아야 할 일을 분명히 하기 위해",
+      "응답 속도를 늦추려고",
+      "모델 버전을 바꾸려고"
+    ],
+    correctIndex: 1,
+    explanation: "역할·목표·제약·형식까지 정리해주면 모델이 덜 헤매고, 재질문 없이도 원하는 형태로 결과를 줄 확률이 높아져요."
+  },
+  {
+    text: "AI를 활용해 '업무 자동화'를 설계할 때 가장 먼저 해야 할 질문은?",
+    options: [
+      "어떤 GPU를 살까?",
+      "어떤 부분이 사람이 꼭 해야 하는 일인지, 어떤 부분이 규칙적인 반복 작업인지 구분하기",
+      "어떤 프레임워크가 유행인지 보기",
+      "몇 명을 감축할 수 있을지 계산하기"
+    ],
+    correctIndex: 1,
+    explanation: "사람만 할 수 있는 판단과 반복적인 기계적 작업을 분리하는 게, 자동화 설계의 출발점이에요."
+  },
+  {
+    text: "AI 요약·정리 기능을 쓸 때, 입력 길이가 너무 길면 생기는 대표적인 문제는?",
+    options: [
+      "폰트가 깨진다",
+      "모델의 컨텍스트 윈도우를 넘어서 앞부분이 잘려 나간다",
+      "이미지가 자동 생성된다",
+      "번역이 된다"
+    ],
+    correctIndex: 1,
+    explanation: "모델이 한 번에 볼 수 있는 토큰 수를 넘으면 앞부분이 잘려서, 중요한 내용이 빠진 상태로 요약될 수 있어요."
+  },
+  {
+    text: "AI 서비스에 AdSense 같은 광고를 붙일 때 특히 주의해야 할 점은?",
+    options: [
+      "폰트 스타일",
+      "AI가 생성한 콘텐츠가 정책 위반(성인/폭력/허위 정보 등)에 해당하지 않는지",
+      "버튼 색상",
+      "로고 크기"
+    ],
+    correctIndex: 1,
+    explanation: "AI가 만들어내는 내용까지 전체 사이트 콘텐츠로 간주되기 때문에, 광고 플랫폼 정책과 충돌하지 않도록 관리해야 해요."
+  },
+  {
+    text: "AI를 활용한 '개인 생산성' 실험에서 가장 중요한 것은?",
+    options: [
+      "한 번에 모든 일을 AI에게 맡기기",
+      "조금씩 실험해보고, 나에게 맞는 패턴을 기록·정리하기",
+      "실패하면 바로 포기하기",
+      "AI 결과만 보고 내 판단은 줄이기"
+    ],
+    correctIndex: 1,
+    explanation: "작은 실험을 반복하면서 나에게 잘 맞는 프롬프트와 워크플로를 기록해두면, 시간이 지날수록 효율이 크게 올라가요."
+  },
+  {
+    text: "AI로 블로그 글을 쓸 때 SEO 측면에서 중요한 행동은?",
+    options: [
+      "검색어를 무조건 과하게 반복하기",
+      "타깃 독자와 검색 의도를 먼저 정의하고, 구조를 내가 설계한 뒤 AI를 보조로 쓰기",
+      "이미지 없이 텍스트만 쓰기",
+      "메타 설명을 비워두기"
+    ],
+    correctIndex: 1,
+    explanation: "검색 의도와 글 구조를 사람이 먼저 잡고, 문장 다듬기·사례 추가 정도를 AI에 맡기는 방식이 더 자연스럽고 안전해요."
+  },
+  {
+    text: "AI 유튜브 스크립트 생성 도구를 쓸 때, 좋은 프롬프트의 예시는?",
+    options: [
+      "아무 말이나 재밌게 써줘",
+      "채널 성격, 타깃 시청자, 길이, 톤(감동/개그 등)을 구체적으로 적어주는 것",
+      "영상 썸네일만 설명하기",
+      "대본 길이를 정하지 않기"
+    ],
+    correctIndex: 1,
+    explanation: "채널/타깃/길이/톤까지 정리해서 프롬프트에 넣으면, 브랜드에 맞는 스크립트를 훨씬 안정적으로 뽑을 수 있어요."
+  }
 ];
 
 // ============================================
 // 상태 관리
 // ============================================
+// 이번 시도에서 실제로 사용할 문제 개수
+const QUIZ_QUESTION_COUNT = 12;
+
+// 매번 랜덤으로 뽑힌 문제들을 담을 배열
+let activeQuizQuestions = [];
+
 let currentQuestionIndex = 0;
 let userAnswers = [];
 let quizAnswers = [];
 let quizRevealed = [];
+
+// 퀴즈 문제들 중에서 랜덤으로 N개 뽑기
+function pickRandomQuizQuestions() {
+    const indices = quizQuestions.map((_, idx) => idx);
+
+    // Fisher-Yates 셔플
+    for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+
+    const selected = indices.slice(0, QUIZ_QUESTION_COUNT);
+    activeQuizQuestions = selected.map(i => quizQuestions[i]);
+}
 
 // ============================================
 // 초기화
@@ -532,8 +893,11 @@ function showQuizSection() {
 }
 
 function initializeQuiz() {
-    quizAnswers = new Array(quizQuestions.length).fill(null);
-    quizRevealed = new Array(quizQuestions.length).fill(false);
+    // 매번 새로운 문제 세트 뽑기
+    pickRandomQuizQuestions();
+
+    quizAnswers = new Array(activeQuizQuestions.length).fill(null);
+    quizRevealed = new Array(activeQuizQuestions.length).fill(false);
     
     renderQuiz();
 }
@@ -542,7 +906,7 @@ function renderQuiz() {
     const container = document.getElementById('quizContainer');
     container.innerHTML = '';
     
-    quizQuestions.forEach((question, qIndex) => {
+    activeQuizQuestions.forEach((question, qIndex) => {
         const card = document.createElement('div');
         card.className = 'quiz-card';
         
@@ -654,15 +1018,15 @@ function toggleAnswer(qIndex) {
 function submitQuiz() {
     // 점수 계산
     let correctCount = 0;
-    quizQuestions.forEach((question, index) => {
+    activeQuizQuestions.forEach((question, index) => {
         if (quizAnswers[index] === question.correctIndex) {
             correctCount++;
         }
     });
-    
+
     // 결과 표시
     document.getElementById('quizScore').textContent = correctCount;
-    document.getElementById('quizTotal').textContent = quizQuestions.length;
+    document.getElementById('quizTotal').textContent = activeQuizQuestions.length;
     
     let comment = '';
     if (correctCount <= 3) {
@@ -685,8 +1049,11 @@ function submitQuiz() {
 }
 
 function resetQuiz() {
-    quizAnswers = new Array(quizQuestions.length).fill(null);
-    quizRevealed = new Array(quizQuestions.length).fill(false);
+    // 새로운 랜덤 문제 세트 뽑기
+    pickRandomQuizQuestions();
+
+    quizAnswers = new Array(activeQuizQuestions.length).fill(null);
+    quizRevealed = new Array(activeQuizQuestions.length).fill(false);
     
     document.getElementById('quizContainer').classList.remove('hidden');
     document.getElementById('quizResultContainer').classList.add('hidden');
