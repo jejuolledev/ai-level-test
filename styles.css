@@ -1,0 +1,705 @@
+/* styles.css */
+
+/* 리셋 및 기본 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    min-height: 100vh;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 유틸리티 클래스 */
+.hidden {
+    display: none !important;
+}
+
+/* 히어로 섹션 */
+.hero-section {
+    padding: 80px 20px 60px;
+    text-align: center;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #2d3748;
+    margin-bottom: 16px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: #4a5568;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    color: #718096;
+    margin-bottom: 32px;
+    max-width: 600px;
+}
+
+/* 히어로 버튼 두 개 정렬 */
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* 두 번째(퀴즈) 버튼 스타일 */
+.cta-button.secondary {
+    background: #ffffff;
+    color: #4a5568;
+    box-shadow: 0 8px 24px rgba(148, 163, 184, 0.5);
+}
+
+.cta-button.secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(148, 163, 184, 0.6);
+}
+
+.cta-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 18px 48px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+}
+
+.hero-character {
+    position: relative;
+}
+
+.robot-emoji {
+    font-size: 120px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* 소개 섹션 */
+.intro-section {
+    padding: 60px 20px;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    color: #2d3748;
+    margin-bottom: 48px;
+}
+
+.intro-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.intro-card {
+    background: white;
+    padding: 32px 24px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.intro-card:hover {
+    transform: translateY(-8px);
+}
+
+.intro-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.intro-card h3 {
+    font-size: 1.3rem;
+    color: #2d3748;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.intro-card p {
+    color: #718096;
+    line-height: 1.5;
+}
+
+/* 레벨 테스트 섹션 */
+.level-test-section {
+    padding: 60px 20px;
+    min-height: 80vh;
+}
+
+.test-card {
+    background: white;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.progress-container {
+    margin-bottom: 40px;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #4a5568;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s ease;
+    border-radius: 10px;
+}
+
+.question-container {
+    margin-bottom: 40px;
+}
+
+.question-text {
+    font-size: 1.5rem;
+    color: #2d3748;
+    margin-bottom: 32px;
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.option-button {
+    background: #f7fafc;
+    border: 3px solid #e2e8f0;
+    padding: 20px 24px;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    color: #2d3748;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-weight: 500;
+}
+
+.option-button:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+}
+
+.option-button.selected {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+}
+
+.test-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 14px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: #cbd5e0;
+}
+
+.btn-primary:disabled, .btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 결과 섹션 */
+.result-section {
+    padding: 60px 20px;
+    min-height: 80vh;
+}
+
+.result-card {
+    background: white;
+    padding: 48px 40px;
+    border-radius: 24px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.result-header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.result-emoji {
+    font-size: 100px;
+    margin-bottom: 24px;
+}
+
+.result-level {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+}
+
+.result-summary {
+    font-size: 1.3rem;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+.result-content {
+    margin-bottom: 40px;
+}
+
+.result-block {
+    margin-bottom: 32px;
+}
+
+.result-block h3 {
+    font-size: 1.3rem;
+    color: #2d3748;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.result-block p {
+    color: #4a5568;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.result-block ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.result-block ul li {
+    color: #4a5568;
+    padding: 12px 0;
+    padding-left: 28px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.result-block ul li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #667eea;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.result-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.result-buttons button {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* 퀴즈 섹션 */
+.quiz-section {
+    padding: 60px 20px;
+}
+
+.quiz-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.quiz-subtitle {
+    color: #4a5568;
+    font-size: 1.1rem;
+    margin-top: 12px;
+}
+
+.quiz-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto 32px;
+}
+
+.quiz-card {
+    background: white;
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.quiz-question-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.quiz-number {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.quiz-question-text {
+    font-size: 1.2rem;
+    color: #2d3748;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.quiz-option {
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    padding: 16px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.quiz-option:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+}
+
+.quiz-option.selected {
+    background: #ebf4ff;
+    border-color: #667eea;
+}
+
+.quiz-option.correct {
+    background: #c6f6d5;
+    border-color: #48bb78;
+}
+
+.quiz-option.wrong {
+    background: #fed7d7;
+    border-color: #f56565;
+}
+
+.option-label {
+    background: #e2e8f0;
+    color: #4a5568;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.quiz-option.selected .option-label {
+    background: #667eea;
+    color: white;
+}
+
+.option-text {
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.quiz-toggle-btn {
+    background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.quiz-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.quiz-answer {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f0f4f8;
+    border-radius: 12px;
+    border-left: 4px solid #667eea;
+}
+
+.quiz-answer-label {
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quiz-explanation {
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+.quiz-submit-btn {
+    display: block;
+    margin: 0 auto;
+    max-width: 400px;
+    width: 100%;
+}
+
+.quiz-result-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.quiz-result-card {
+    background: white;
+    padding: 48px 32px;
+    border-radius: 24px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.quiz-result-card h3 {
+    font-size: 2rem;
+    color: #2d3748;
+    margin-bottom: 24px;
+}
+
+.quiz-score {
+    margin-bottom: 24px;
+}
+
+.score-number {
+    font-size: 5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.score-total {
+    font-size: 2rem;
+    color: #718096;
+    font-weight: 600;
+}
+
+.quiz-comment {
+    color: #4a5568;
+    font-size: 1.2rem;
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+/* 푸터 */
+.footer {
+    background: rgba(255,255,255,0.2);
+    padding: 40px 20px;
+    text-align: center;
+    color: #4a5568;
+    margin-top: 60px;
+}
+
+.footer p {
+    margin: 8px 0;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        font-size: 1.1rem;
+        padding: 16px 32px;
+    }
+
+    .robot-emoji {
+        font-size: 80px;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+    }
+
+    .intro-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .test-card, .result-card {
+        padding: 24px 20px;
+    }
+
+    .question-text {
+        font-size: 1.2rem;
+    }
+
+    .option-button {
+        padding: 16px 18px;
+        font-size: 1rem;
+    }
+
+    .test-buttons {
+        flex-direction: column;
+    }
+
+    .result-level {
+        font-size: 2rem;
+    }
+
+    .result-summary {
+        font-size: 1.1rem;
+    }
+
+    .result-buttons {
+        flex-direction: column;
+    }
+
+    .result-buttons button {
+        width: 100%;
+    }
+
+    .quiz-card {
+        padding: 24px 20px;
+    }
+
+    .quiz-question-text {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.6rem;
+    }
+
+    .test-card, .result-card, .quiz-card {
+        padding: 20px 16px;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 12px 24px;
+        font-size: 1rem;
+    }
+}
