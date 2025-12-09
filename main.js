@@ -963,18 +963,40 @@ function initQuizForDisplay() {
     // 새로운 랜덤 문제 세트 뽑기
     pickRandomQuizQuestions();
 
+    console.log('Quiz initialized with', activeQuizQuestions.length, 'questions');
+
     currentQuizIndex = 0;
     quizAnswers = new Array(activeQuizQuestions.length).fill(null);
 
     // 퀴즈 카드 보이기, 결과 숨기기
-    document.querySelector('.quiz-card').classList.remove('hidden');
-    document.getElementById('quizResultContainer').classList.add('hidden');
+    const quizCard = document.querySelector('.quiz-card');
+    if (quizCard) {
+        quizCard.classList.remove('hidden');
+    } else {
+        console.error('Quiz card not found!');
+    }
+
+    const resultContainer = document.getElementById('quizResultContainer');
+    if (resultContainer) {
+        resultContainer.classList.add('hidden');
+    }
 
     // 첫 질문 렌더링
     renderQuizQuestion();
 }
 
 function renderQuizQuestion() {
+    // 안전 검사
+    if (!activeQuizQuestions || activeQuizQuestions.length === 0) {
+        console.error('No quiz questions available');
+        return;
+    }
+
+    if (currentQuizIndex >= activeQuizQuestions.length) {
+        console.error('Invalid quiz index');
+        return;
+    }
+
     const question = activeQuizQuestions[currentQuizIndex];
     const totalQuestions = activeQuizQuestions.length;
 
