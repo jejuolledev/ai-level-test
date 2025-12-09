@@ -1151,7 +1151,7 @@ function renderQuizQuestion() {
             hintBtn.style.display = 'block';
             hintBtn.classList.remove('used');
             hintBtn.disabled = false;
-            hintBtn.textContent = '모르겠어요, 답 좀 알려주세요 🙈';
+            hintBtn.textContent = 'AI한테 물어볼래요 🤖';
         }
     }
 
