@@ -946,10 +946,14 @@ function resetTest() {
 // ============================================
 
 function showQuizSection() {
+    console.log('=== showQuizSection called ===');
+
     // 퀴즈 페이지 표시
+    console.log('Calling showQuizPage...');
     showQuizPage();
 
     // 퀴즈 초기화 + 렌더링
+    console.log('Calling initQuizForDisplay...');
     initQuizForDisplay();
 
     // 히스토리에 추가
@@ -957,42 +961,130 @@ function showQuizSection() {
 
     // 스크롤
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    console.log('=== showQuizSection completed ===');
 }
 
 function initQuizForDisplay() {
+    console.log('=== initQuizForDisplay called ===');
+
     // 새로운 랜덤 문제 세트 뽑기
+    console.log('Calling pickRandomQuizQuestions...');
     pickRandomQuizQuestions();
+
+    console.log('Quiz initialized with', activeQuizQuestions.length, 'questions');
+    console.log('Sample question:', activeQuizQuestions[0]);
 
     currentQuizIndex = 0;
     quizAnswers = new Array(activeQuizQuestions.length).fill(null);
+    console.log('currentQuizIndex:', currentQuizIndex);
+    console.log('quizAnswers array created with length:', quizAnswers.length);
 
     // 퀴즈 카드 보이기, 결과 숨기기
-    document.querySelector('.quiz-card').classList.remove('hidden');
-    document.getElementById('quizResultContainer').classList.add('hidden');
+    const quizCard = document.querySelector('.quiz-card');
+    console.log('Quiz card element:', quizCard);
+
+    if (quizCard) {
+        quizCard.classList.remove('hidden');
+        console.log('Quiz card shown');
+    } else {
+        console.error('Quiz card not found!');
+    }
+
+    const resultContainer = document.getElementById('quizResultContainer');
+    if (resultContainer) {
+        resultContainer.classList.add('hidden');
+        console.log('Result container hidden');
+    }
 
     // 첫 질문 렌더링
+    console.log('Calling renderQuizQuestion...');
     renderQuizQuestion();
+    console.log('=== initQuizForDisplay completed ===');
 }
 
 function renderQuizQuestion() {
+    console.log('=== renderQuizQuestion called ===');
+    console.log('activeQuizQuestions:', activeQuizQuestions);
+    console.log('currentQuizIndex:', currentQuizIndex);
+
+    // 안전 검사
+    if (!activeQuizQuestions || activeQuizQuestions.length === 0) {
+        console.error('No quiz questions available');
+        const errorMsg = document.createElement('div');
+        errorMsg.style.cssText = 'color: red; font-size: 20px; padding: 20px; text-align: center;';
+        errorMsg.textContent = 'ERROR: 퀴즈 문제를 불러오지 못했습니다. activeQuizQuestions가 비어있습니다.';
+        document.getElementById('quizOptionsContainer').appendChild(errorMsg);
+        return;
+    }
+
+    if (currentQuizIndex >= activeQuizQuestions.length) {
+        console.error('Invalid quiz index');
+        const errorMsg = document.createElement('div');
+        errorMsg.style.cssText = 'color: red; font-size: 20px; padding: 20px; text-align: center;';
+        errorMsg.textContent = 'ERROR: 잘못된 퀴즈 인덱스입니다.';
+        document.getElementById('quizOptionsContainer').appendChild(errorMsg);
+        return;
+    }
+
     const question = activeQuizQuestions[currentQuizIndex];
+    console.log('Current question:', question);
+
     const totalQuestions = activeQuizQuestions.length;
 
     // 진행률 업데이트
-    document.getElementById('currentQuizQuestion').textContent = currentQuizIndex + 1;
-    document.getElementById('totalQuizQuestions').textContent = totalQuestions;
+    const currentQuizQuestionElem = document.getElementById('currentQuizQuestion');
+    const totalQuizQuestionsElem = document.getElementById('totalQuizQuestions');
 
-    const progressPercent = ((currentQuizIndex + 1) / totalQuestions) * 100;
-    document.getElementById('quizProgressFill').style.width = `${progressPercent}%`;
+    console.log('Progress elements:', currentQuizQuestionElem, totalQuizQuestionsElem);
+
+    if (currentQuizQuestionElem) {
+        currentQuizQuestionElem.textContent = currentQuizIndex + 1;
+    }
+    if (totalQuizQuestionsElem) {
+        totalQuizQuestionsElem.textContent = totalQuestions;
+    }
+
+    const progressFill = document.getElementById('quizProgressFill');
+    if (progressFill) {
+        const progressPercent = ((currentQuizIndex + 1) / totalQuestions) * 100;
+        progressFill.style.width = `${progressPercent}%`;
+    }
 
     // 질문 텍스트
-    document.getElementById('quizQuestionText').textContent = question.text;
+    const questionTextElem = document.getElementById('quizQuestionText');
+    console.log('Question text element:', questionTextElem);
+    console.log('Question text to set:', question.text);
+
+    if (questionTextElem) {
+        questionTextElem.textContent = question.text;
+        console.log('Question text set successfully');
+    } else {
+        console.error('quizQuestionText element not found!');
+    }
 
     // 선택지 렌더링
     const optionsContainer = document.getElementById('quizOptionsContainer');
+    console.log('Options container:', optionsContainer);
+
+    if (!optionsContainer) {
+        console.error('quizOptionsContainer element not found!');
+        return;
+    }
+
     optionsContainer.innerHTML = '';
+    console.log('Rendering options:', question.options);
+
+    if (!question.options || question.options.length === 0) {
+        console.error('No options available for this question!');
+        const errorMsg = document.createElement('div');
+        errorMsg.style.cssText = 'color: red; font-size: 20px; padding: 20px; text-align: center;';
+        errorMsg.textContent = 'ERROR: 이 문제에 선택지가 없습니다.';
+        optionsContainer.appendChild(errorMsg);
+        return;
+    }
 
     question.options.forEach((option, index) => {
+        console.log(`Creating option ${index}:`, option);
         const button = document.createElement('button');
         button.className = 'option-button';
         button.textContent = option;
@@ -1005,7 +1097,10 @@ function renderQuizQuestion() {
 
         button.addEventListener('click', () => selectQuizOption(index));
         optionsContainer.appendChild(button);
+        console.log(`Option ${index} added to container`);
     });
+
+    console.log('All options rendered. Total buttons:', optionsContainer.children.length);
 
     // 정답 및 해설 영역 업데이트
     const answerSection = document.getElementById('quizAnswerSection');
