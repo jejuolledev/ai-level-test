@@ -632,15 +632,20 @@ body {
     }
 
     .hero-buttons {
-        flex-direction: column;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
         width: 100%;
+        max-width: 400px;
         align-items: stretch;
+        gap: 16px;
+        margin: 0 auto;
     }
 
     .cta-button {
         font-size: 1.1rem;
         padding: 16px 32px;
-        width: 100%;
+        width: 100% !important;
+        max-width: 100%;
     }
 
     .robot-emoji {
