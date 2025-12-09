@@ -720,6 +720,9 @@ function initializeEventListeners() {
 
     // 퀴즈 - 재시도 버튼
     document.getElementById('quizRetryBtn').addEventListener('click', resetQuiz);
+
+    // 퀴즈 - 답 보기 버튼
+    document.getElementById('quizHintBtn').addEventListener('click', showQuizAnswer);
 }
 
 // 뒤로가기 버튼 처리
@@ -1104,23 +1107,52 @@ function renderQuizQuestion() {
 
     // 정답 및 해설 영역 업데이트
     const answerSection = document.getElementById('quizAnswerSection');
+    const hintBtn = document.getElementById('quizHintBtn');
+
     if (quizAnswers[currentQuizIndex] !== null) {
-        // 답을 선택한 경우 정답/오답 표시
-        const isCorrect = quizAnswers[currentQuizIndex] === question.correctIndex;
+        // 답을 선택했거나 힌트를 본 경우
         const answerResult = document.getElementById('quizAnswerResult');
 
-        if (isCorrect) {
-            answerResult.innerHTML = '✅ 정답입니다!';
-            answerResult.style.color = '#48bb78';
+        if (quizAnswers[currentQuizIndex] === -1) {
+            // 힌트를 본 경우
+            answerResult.innerHTML = `💡 정답은 ${question.correctIndex + 1}번입니다!`;
+            answerResult.style.color = '#f59e0b';
+            if (hintBtn) {
+                hintBtn.classList.add('used');
+                hintBtn.disabled = true;
+                hintBtn.textContent = '답을 확인했어요 ✓';
+            }
         } else {
-            answerResult.innerHTML = `❌ 오답입니다. 정답은 ${question.correctIndex + 1}번입니다.`;
-            answerResult.style.color = '#f56565';
+            // 답을 선택한 경우 정답/오답 표시
+            const isCorrect = quizAnswers[currentQuizIndex] === question.correctIndex;
+
+            if (isCorrect) {
+                answerResult.innerHTML = '✅ 정답입니다!';
+                answerResult.style.color = '#48bb78';
+            } else {
+                answerResult.innerHTML = `❌ 오답입니다. 정답은 ${question.correctIndex + 1}번입니다.`;
+                answerResult.style.color = '#f56565';
+            }
+
+            // 답을 선택했으면 힌트 버튼 숨기기
+            if (hintBtn) {
+                hintBtn.style.display = 'none';
+            }
         }
 
         document.getElementById('quizExplanation').textContent = question.explanation;
         answerSection.classList.remove('hidden');
     } else {
+        // 아직 답을 선택하지 않은 경우
         answerSection.classList.add('hidden');
+
+        // 힌트 버튼 표시 및 초기화
+        if (hintBtn) {
+            hintBtn.style.display = 'block';
+            hintBtn.classList.remove('used');
+            hintBtn.disabled = false;
+            hintBtn.textContent = '모르겠어요, 답 좀 알려주세요 🙈';
+        }
     }
 
     // 버튼 상태 업데이트
@@ -1153,6 +1185,44 @@ function selectQuizOption(index) {
 
     document.getElementById('quizExplanation').textContent = question.explanation;
     document.getElementById('quizAnswerSection').classList.remove('hidden');
+
+    // 힌트 버튼 숨기기 (답을 선택했으므로)
+    const hintBtn = document.getElementById('quizHintBtn');
+    if (hintBtn) {
+        hintBtn.style.display = 'none';
+    }
+
+    // 다음 버튼 활성화
+    updateQuizNavigationButtons();
+}
+
+function showQuizAnswer() {
+    // 이미 답을 선택했으면 무시
+    if (quizAnswers[currentQuizIndex] !== null) {
+        return;
+    }
+
+    const question = activeQuizQuestions[currentQuizIndex];
+    const answerResult = document.getElementById('quizAnswerResult');
+
+    // 답을 봤다고 표시 (-1로 저장)
+    quizAnswers[currentQuizIndex] = -1;
+
+    // 정답 표시
+    answerResult.innerHTML = `💡 정답은 ${question.correctIndex + 1}번입니다!`;
+    answerResult.style.color = '#f59e0b';
+
+    // 해설 표시
+    document.getElementById('quizExplanation').textContent = question.explanation;
+    document.getElementById('quizAnswerSection').classList.remove('hidden');
+
+    // 힌트 버튼을 "사용됨" 상태로 변경
+    const hintBtn = document.getElementById('quizHintBtn');
+    if (hintBtn) {
+        hintBtn.classList.add('used');
+        hintBtn.disabled = true;
+        hintBtn.textContent = '답을 확인했어요 ✓';
+    }
 
     // 다음 버튼 활성화
     updateQuizNavigationButtons();
