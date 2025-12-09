@@ -70,6 +70,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
+    justify-content: center;
 }
 
 /* 두 번째(퀴즈) 버튼 스타일 */
@@ -630,9 +631,16 @@ body {
         font-size: 1rem;
     }
 
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+        align-items: stretch;
+    }
+
     .cta-button {
         font-size: 1.1rem;
         padding: 16px 32px;
+        width: 100%;
     }
 
     .robot-emoji {
