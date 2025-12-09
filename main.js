@@ -687,7 +687,13 @@ function pickRandomQuizQuestions() {
 // 초기화
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
+    // 초기 상태 설정
+    history.replaceState({ page: 'home' }, '', '');
+
     initializeEventListeners();
+
+    // 뒤로가기 이벤트 처리
+    window.addEventListener('popstate', handlePopState);
 });
 
 function initializeEventListeners() {
@@ -699,18 +705,73 @@ function initializeEventListeners() {
     if (startQuizBtn) {
         startQuizBtn.addEventListener('click', showQuizSection);
     }
-    
+
     // 레벨 테스트 - 이전/다음 버튼
     document.getElementById('prevBtn').addEventListener('click', goToPreviousQuestion);
     document.getElementById('nextBtn').addEventListener('click', goToNextQuestion);
-    
+
     // 결과 - 다시 테스트하기, 퀴즈 버튼
     document.getElementById('retestBtn').addEventListener('click', resetTest);
     document.getElementById('quizBtn').addEventListener('click', showQuizSection);
-    
+
     // 퀴즈 - 제출 및 재시도 버튼
     document.getElementById('quizSubmitBtn').addEventListener('click', submitQuiz);
     document.getElementById('quizRetryBtn').addEventListener('click', resetQuiz);
+}
+
+// 뒤로가기 버튼 처리
+function handlePopState(event) {
+    if (!event.state) {
+        showHomePage();
+        return;
+    }
+
+    switch(event.state.page) {
+        case 'home':
+            showHomePage();
+            break;
+        case 'levelTest':
+            // 레벨 테스트 상태 복원
+            if (event.state.questionIndex !== undefined) {
+                currentQuestionIndex = event.state.questionIndex;
+                userAnswers = event.state.userAnswers || [];
+                showLevelTestPage();
+                renderQuestion();
+            }
+            break;
+        case 'result':
+            // 결과 페이지는 뒤로가기 시 홈으로
+            showHomePage();
+            break;
+        case 'quiz':
+            showQuizPage();
+            break;
+    }
+}
+
+function showHomePage() {
+    document.getElementById('hero').classList.remove('hidden');
+    document.getElementById('intro').classList.remove('hidden');
+    document.getElementById('levelTest').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+    document.getElementById('quiz').classList.add('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showLevelTestPage() {
+    document.getElementById('hero').classList.add('hidden');
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('levelTest').classList.remove('hidden');
+}
+
+function showQuizPage() {
+    document.getElementById('hero').classList.add('hidden');
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('levelTest').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
+    document.getElementById('quiz').classList.remove('hidden');
 }
 
 // ============================================
@@ -721,18 +782,20 @@ function startLevelTest() {
     // 초기화
     currentQuestionIndex = 0;
     userAnswers = [];
-    
+
     // 섹션 표시/숨김
-    document.getElementById('hero').classList.add('hidden');
-    document.getElementById('intro').classList.add('hidden');
-    document.getElementById('result').classList.add('hidden');
-    document.getElementById('quiz').classList.add('hidden');
-    
-    document.getElementById('levelTest').classList.remove('hidden');
-    
+    showLevelTestPage();
+
     // 첫 질문 렌더링
     renderQuestion();
-    
+
+    // 히스토리에 추가
+    history.pushState({
+        page: 'levelTest',
+        questionIndex: currentQuestionIndex,
+        userAnswers: [...userAnswers]
+    }, '', '');
+
     // 상단으로 스크롤
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -833,19 +896,19 @@ function showResult() {
         const question = levelQuestions[questionIndex];
         totalScore += question.options[answerIndex].score;
     });
-    
+
     // 레벨 결정
-    const result = levelResults.find(level => 
+    const result = levelResults.find(level =>
         totalScore >= level.minScore && totalScore <= level.maxScore
     );
-    
+
     // 결과 화면 렌더링
     document.getElementById('resultEmoji').textContent = result.emoji;
     document.getElementById('resultLevel').textContent = result.level;
     document.getElementById('resultSummary').textContent = result.summary;
     document.getElementById('resultHabit').textContent = result.habit;
     document.getElementById('resultStrength').textContent = result.strength;
-    
+
     const missionsContainer = document.getElementById('resultMissions');
     missionsContainer.innerHTML = '';
     result.missions.forEach(mission => {
@@ -853,23 +916,26 @@ function showResult() {
         li.textContent = mission;
         missionsContainer.appendChild(li);
     });
-    
+
     // 섹션 표시/숨김
     document.getElementById('levelTest').classList.add('hidden');
     document.getElementById('result').classList.remove('hidden');
-    
+
+    // 히스토리에 추가
+    history.pushState({ page: 'result' }, '', '');
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function resetTest() {
     currentQuestionIndex = 0;
     userAnswers = [];
-    
-    document.getElementById('result').classList.add('hidden');
-    document.getElementById('hero').classList.remove('hidden');
-    document.getElementById('intro').classList.remove('hidden');
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // 홈 페이지 표시
+    showHomePage();
+
+    // 히스토리에 추가
+    history.pushState({ page: 'home' }, '', '');
 }
 
 // ============================================
@@ -877,19 +943,31 @@ function resetTest() {
 // ============================================
 
 function showQuizSection() {
-    // 상단 섹션 숨기기
-    document.getElementById('hero').classList.add('hidden');
-    document.getElementById('intro').classList.add('hidden');
+    // 퀴즈 페이지 표시
+    showQuizPage();
 
-    // 레벨 테스트/결과 숨기기
-    document.getElementById('levelTest').classList.add('hidden');
-    document.getElementById('result').classList.add('hidden');
+    // 퀴즈 초기화 + 렌더링
+    initQuizForDisplay();
 
-    // 퀴즈 섹션 보이게
-    document.getElementById('quiz').classList.remove('hidden');
+    // 히스토리에 추가
+    history.pushState({ page: 'quiz' }, '', '');
 
-    // 퀴즈 초기화 + 스크롤
-    resetQuiz();   // quizAnswers/quizRevealed 초기화 + 렌더 + scrollIntoView
+    // 스크롤
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function initQuizForDisplay() {
+    // 새로운 랜덤 문제 세트 뽑기
+    pickRandomQuizQuestions();
+
+    quizAnswers = new Array(activeQuizQuestions.length).fill(null);
+    quizRevealed = new Array(activeQuizQuestions.length).fill(false);
+
+    document.getElementById('quizContainer').classList.remove('hidden');
+    document.getElementById('quizResultContainer').classList.add('hidden');
+    document.getElementById('quizSubmitBtn').classList.add('hidden');
+
+    renderQuiz();
 }
 
 function initializeQuiz() {
@@ -1049,18 +1127,12 @@ function submitQuiz() {
 }
 
 function resetQuiz() {
-    // 새로운 랜덤 문제 세트 뽑기
-    pickRandomQuizQuestions();
+    // 퀴즈 초기화 + 렌더링
+    initQuizForDisplay();
 
-    quizAnswers = new Array(activeQuizQuestions.length).fill(null);
-    quizRevealed = new Array(activeQuizQuestions.length).fill(false);
-    
-    document.getElementById('quizContainer').classList.remove('hidden');
-    document.getElementById('quizResultContainer').classList.add('hidden');
-    document.getElementById('quizSubmitBtn').classList.add('hidden');
-    
-    renderQuiz();
-    
+    // 히스토리 상태 갱신 (새로운 항목 추가하지 않고 현재 상태 교체)
+    history.replaceState({ page: 'quiz' }, '', '');
+
     // 퀴즈 섹션 상단으로 스크롤
     document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
 }
