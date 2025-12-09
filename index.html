@@ -130,13 +130,41 @@
     <!-- AI 상식 퀴즈 섹션 -->
     <section id="quiz" class="quiz-section hidden">
         <div class="container">
-            <div class="quiz-header">
-                <h2 class="section-title">AI 상식 퀴즈</h2>
-                <p class="quiz-subtitle">덕후들을 위한 AI 지식 테스트! 정답과 해설을 확인해보세요.</p>
+            <div class="quiz-card">
+                <!-- 진행률 -->
+                <div class="progress-container">
+                    <div class="progress-text">
+                        <span id="currentQuizQuestion">1</span> / <span id="totalQuizQuestions">12</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="quizProgressFill"></div>
+                    </div>
+                </div>
+
+                <!-- 질문 영역 -->
+                <div class="question-container">
+                    <h2 class="question-text" id="quizQuestionText"></h2>
+                    <div class="options-container" id="quizOptionsContainer"></div>
+                </div>
+
+                <!-- 정답 및 해설 영역 (선택 후 표시) -->
+                <div class="quiz-answer-section hidden" id="quizAnswerSection">
+                    <div class="quiz-answer">
+                        <div class="quiz-answer-label">
+                            <span id="quizAnswerResult"></span>
+                        </div>
+                        <div class="quiz-explanation" id="quizExplanation"></div>
+                    </div>
+                </div>
+
+                <!-- 버튼 영역 -->
+                <div class="test-buttons">
+                    <button class="btn-secondary" id="quizPrevBtn" disabled>이전</button>
+                    <button class="btn-primary" id="quizNextBtn" disabled>다음 질문</button>
+                </div>
             </div>
 
-            <div class="quiz-container" id="quizContainer"></div>
-
+            <!-- 결과 섹션 -->
             <div class="quiz-result-container hidden" id="quizResultContainer">
                 <div class="quiz-result-card">
                     <h3>퀴즈 결과</h3>
@@ -148,8 +176,6 @@
                     <button class="btn-primary" id="quizRetryBtn">다시 풀어보기</button>
                 </div>
             </div>
-
-            <button class="btn-primary quiz-submit-btn hidden" id="quizSubmitBtn">결과 확인하기</button>
         </div>
     </section>
 

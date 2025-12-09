@@ -667,7 +667,7 @@ let activeQuizQuestions = [];
 let currentQuestionIndex = 0;
 let userAnswers = [];
 let quizAnswers = [];
-let quizRevealed = [];
+let currentQuizIndex = 0;
 
 // 퀴즈 문제들 중에서 랜덤으로 N개 뽑기
 function pickRandomQuizQuestions() {
@@ -714,8 +714,11 @@ function initializeEventListeners() {
     document.getElementById('retestBtn').addEventListener('click', resetTest);
     document.getElementById('quizBtn').addEventListener('click', showQuizSection);
 
-    // 퀴즈 - 제출 및 재시도 버튼
-    document.getElementById('quizSubmitBtn').addEventListener('click', submitQuiz);
+    // 퀴즈 - 이전/다음 버튼
+    document.getElementById('quizPrevBtn').addEventListener('click', goToPreviousQuiz);
+    document.getElementById('quizNextBtn').addEventListener('click', goToNextQuiz);
+
+    // 퀴즈 - 재시도 버튼
     document.getElementById('quizRetryBtn').addEventListener('click', resetQuiz);
 }
 
@@ -960,140 +963,144 @@ function initQuizForDisplay() {
     // 새로운 랜덤 문제 세트 뽑기
     pickRandomQuizQuestions();
 
+    currentQuizIndex = 0;
     quizAnswers = new Array(activeQuizQuestions.length).fill(null);
-    quizRevealed = new Array(activeQuizQuestions.length).fill(false);
 
-    document.getElementById('quizContainer').classList.remove('hidden');
+    // 퀴즈 카드 보이기, 결과 숨기기
+    document.querySelector('.quiz-card').classList.remove('hidden');
     document.getElementById('quizResultContainer').classList.add('hidden');
-    document.getElementById('quizSubmitBtn').classList.add('hidden');
 
-    renderQuiz();
+    // 첫 질문 렌더링
+    renderQuizQuestion();
 }
 
-function initializeQuiz() {
-    // 매번 새로운 문제 세트 뽑기
-    pickRandomQuizQuestions();
+function renderQuizQuestion() {
+    const question = activeQuizQuestions[currentQuizIndex];
+    const totalQuestions = activeQuizQuestions.length;
 
-    quizAnswers = new Array(activeQuizQuestions.length).fill(null);
-    quizRevealed = new Array(activeQuizQuestions.length).fill(false);
-    
-    renderQuiz();
-}
+    // 진행률 업데이트
+    document.getElementById('currentQuizQuestion').textContent = currentQuizIndex + 1;
+    document.getElementById('totalQuizQuestions').textContent = totalQuestions;
 
-function renderQuiz() {
-    const container = document.getElementById('quizContainer');
-    container.innerHTML = '';
-    
-    activeQuizQuestions.forEach((question, qIndex) => {
-        const card = document.createElement('div');
-        card.className = 'quiz-card';
-        
-        // 질문 헤더
-        const header = document.createElement('div');
-        header.className = 'quiz-question-header';
-        
-        const number = document.createElement('div');
-        number.className = 'quiz-number';
-        number.textContent = qIndex + 1;
-        
-        const questionText = document.createElement('div');
-        questionText.className = 'quiz-question-text';
-        questionText.textContent = question.text;
-        
-        header.appendChild(number);
-        header.appendChild(questionText);
-        card.appendChild(header);
-        
-        // 선택지
-        const optionsDiv = document.createElement('div');
-        optionsDiv.className = 'quiz-options';
-        
-        question.options.forEach((option, oIndex) => {
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'quiz-option';
-            optionDiv.dataset.qindex = qIndex;
-            optionDiv.dataset.oindex = oIndex;
-            
-            if (quizAnswers[qIndex] === oIndex) {
-                optionDiv.classList.add('selected');
-            }
-            
-            // 정답 공개 시 색상 표시
-            if (quizRevealed[qIndex]) {
-                if (oIndex === question.correctIndex) {
-                    optionDiv.classList.add('correct');
-                } else if (quizAnswers[qIndex] === oIndex) {
-                    optionDiv.classList.add('wrong');
-                }
-            }
-            
-            const label = document.createElement('div');
-            label.className = 'option-label';
-            label.textContent = oIndex + 1;
-            
-            const text = document.createElement('div');
-            text.className = 'option-text';
-            text.textContent = option;
-            
-            optionDiv.appendChild(label);
-            optionDiv.appendChild(text);
-            
-            optionDiv.addEventListener('click', () => selectQuizOption(qIndex, oIndex));
-            
-            optionsDiv.appendChild(optionDiv);
-        });
-        
-        card.appendChild(optionsDiv);
-        
-        // 정답 & 해설 토글 버튼
-        const toggleBtn = document.createElement('button');
-        toggleBtn.className = 'quiz-toggle-btn';
-        toggleBtn.textContent = quizRevealed[qIndex] ? '해설 숨기기' : '정답 & 해설 보기';
-        toggleBtn.addEventListener('click', () => toggleAnswer(qIndex));
-        card.appendChild(toggleBtn);
-        
-        // 해설 영역
-        if (quizRevealed[qIndex]) {
-            const answerDiv = document.createElement('div');
-            answerDiv.className = 'quiz-answer';
-            
-            const answerLabel = document.createElement('div');
-            answerLabel.className = 'quiz-answer-label';
-            answerLabel.innerHTML = `✅ 정답: ${question.correctIndex + 1}번`;
-            
-            const explanation = document.createElement('div');
-            explanation.className = 'quiz-explanation';
-            explanation.textContent = question.explanation;
-            
-            answerDiv.appendChild(answerLabel);
-            answerDiv.appendChild(explanation);
-            card.appendChild(answerDiv);
+    const progressPercent = ((currentQuizIndex + 1) / totalQuestions) * 100;
+    document.getElementById('quizProgressFill').style.width = `${progressPercent}%`;
+
+    // 질문 텍스트
+    document.getElementById('quizQuestionText').textContent = question.text;
+
+    // 선택지 렌더링
+    const optionsContainer = document.getElementById('quizOptionsContainer');
+    optionsContainer.innerHTML = '';
+
+    question.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'option-button';
+        button.textContent = option;
+        button.dataset.index = index;
+
+        // 이미 선택한 답이 있으면 표시
+        if (quizAnswers[currentQuizIndex] === index) {
+            button.classList.add('selected');
         }
-        
-        container.appendChild(card);
+
+        button.addEventListener('click', () => selectQuizOption(index));
+        optionsContainer.appendChild(button);
     });
-    
-    // 제출 버튼 표시 여부
-    const allAnswered = quizAnswers.every(answer => answer !== null);
-    const submitBtn = document.getElementById('quizSubmitBtn');
-    if (allAnswered) {
-        submitBtn.classList.remove('hidden');
+
+    // 정답 및 해설 영역 업데이트
+    const answerSection = document.getElementById('quizAnswerSection');
+    if (quizAnswers[currentQuizIndex] !== null) {
+        // 답을 선택한 경우 정답/오답 표시
+        const isCorrect = quizAnswers[currentQuizIndex] === question.correctIndex;
+        const answerResult = document.getElementById('quizAnswerResult');
+
+        if (isCorrect) {
+            answerResult.innerHTML = '✅ 정답입니다!';
+            answerResult.style.color = '#48bb78';
+        } else {
+            answerResult.innerHTML = `❌ 오답입니다. 정답은 ${question.correctIndex + 1}번입니다.`;
+            answerResult.style.color = '#f56565';
+        }
+
+        document.getElementById('quizExplanation').textContent = question.explanation;
+        answerSection.classList.remove('hidden');
     } else {
-        submitBtn.classList.add('hidden');
+        answerSection.classList.add('hidden');
+    }
+
+    // 버튼 상태 업데이트
+    updateQuizNavigationButtons();
+}
+
+function selectQuizOption(index) {
+    quizAnswers[currentQuizIndex] = index;
+
+    // 모든 버튼에서 selected 클래스 제거
+    document.querySelectorAll('#quizOptionsContainer .option-button').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+
+    // 선택한 버튼에 selected 클래스 추가
+    document.querySelector(`#quizOptionsContainer .option-button[data-index="${index}"]`).classList.add('selected');
+
+    // 정답 및 해설 표시
+    const question = activeQuizQuestions[currentQuizIndex];
+    const isCorrect = index === question.correctIndex;
+    const answerResult = document.getElementById('quizAnswerResult');
+
+    if (isCorrect) {
+        answerResult.innerHTML = '✅ 정답입니다!';
+        answerResult.style.color = '#48bb78';
+    } else {
+        answerResult.innerHTML = `❌ 오답입니다. 정답은 ${question.correctIndex + 1}번입니다.`;
+        answerResult.style.color = '#f56565';
+    }
+
+    document.getElementById('quizExplanation').textContent = question.explanation;
+    document.getElementById('quizAnswerSection').classList.remove('hidden');
+
+    // 다음 버튼 활성화
+    updateQuizNavigationButtons();
+}
+
+function updateQuizNavigationButtons() {
+    const prevBtn = document.getElementById('quizPrevBtn');
+    const nextBtn = document.getElementById('quizNextBtn');
+
+    // 이전 버튼 (첫 질문이 아닐 때만 활성화)
+    prevBtn.disabled = currentQuizIndex === 0;
+
+    // 다음 버튼 (답을 선택했을 때만 활성화)
+    nextBtn.disabled = quizAnswers[currentQuizIndex] === null;
+
+    // 마지막 질문이면 버튼 텍스트 변경
+    if (currentQuizIndex === activeQuizQuestions.length - 1) {
+        nextBtn.textContent = '결과 보기';
+    } else {
+        nextBtn.textContent = '다음 질문';
     }
 }
 
-function selectQuizOption(qIndex, oIndex) {
-    quizAnswers[qIndex] = oIndex;
-    renderQuiz();
+function goToPreviousQuiz() {
+    if (currentQuizIndex > 0) {
+        currentQuizIndex--;
+        renderQuizQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 }
 
-function toggleAnswer(qIndex) {
-    quizRevealed[qIndex] = !quizRevealed[qIndex];
-    renderQuiz();
+function goToNextQuiz() {
+    if (currentQuizIndex < activeQuizQuestions.length - 1) {
+        currentQuizIndex++;
+        renderQuizQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+        // 마지막 질문 - 결과 계산 및 표시
+        showQuizResult();
+    }
 }
 
-function submitQuiz() {
+function showQuizResult() {
     // 점수 계산
     let correctCount = 0;
     activeQuizQuestions.forEach((question, index) => {
@@ -1105,7 +1112,7 @@ function submitQuiz() {
     // 결과 표시
     document.getElementById('quizScore').textContent = correctCount;
     document.getElementById('quizTotal').textContent = activeQuizQuestions.length;
-    
+
     let comment = '';
     if (correctCount <= 3) {
         comment = '이제 막 AI 세계의 문을 두드리기 시작했어요. 조금씩 배워가다 보면 금방 전문가가 될 수 있어요!';
@@ -1114,19 +1121,22 @@ function submitQuiz() {
     } else {
         comment = 'AI 덕후 인증 완료! 주변 사람들한테 강의해도 되겠어요. 정말 대단해요! 🎉';
     }
-    
+
     document.getElementById('quizComment').textContent = comment;
-    
+
     // 결과 카드 표시
-    document.getElementById('quizContainer').classList.add('hidden');
-    document.getElementById('quizSubmitBtn').classList.add('hidden');
+    document.querySelector('.quiz-card').classList.add('hidden');
     document.getElementById('quizResultContainer').classList.remove('hidden');
-    
+
     // 스크롤
     document.getElementById('quizResultContainer').scrollIntoView({ behavior: 'smooth' });
 }
 
 function resetQuiz() {
+    // 결과 숨기고 퀴즈 카드 보이기
+    document.getElementById('quizResultContainer').classList.add('hidden');
+    document.querySelector('.quiz-card').classList.remove('hidden');
+
     // 퀴즈 초기화 + 렌더링
     initQuizForDisplay();
 
@@ -1134,5 +1144,5 @@ function resetQuiz() {
     history.replaceState({ page: 'quiz' }, '', '');
 
     // 퀴즈 섹션 상단으로 스크롤
-    document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
