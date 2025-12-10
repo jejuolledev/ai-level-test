@@ -1,9 +1,9 @@
 // main.js
 
 // ============================================
-// 데이터: 레벨 테스트 질문
+// 데이터: 레벨 테스트 질문 (50개)
 // ============================================
-const levelQuestions = [
+const allLevelQuestions = [
     {
         text: "일상이나 업무에서 ChatGPT 같은 AI를 얼마나 자주 사용하나요?",
         options: [
@@ -111,8 +111,350 @@ const levelQuestions = [
             { text: "관심 있는 건 찾아봐요", score: 3 },
             { text: "정기적으로 팔로우하고 있어요", score: 4 }
         ]
+    },
+    {
+        text: "AI가 생성한 이미지나 영상을 사용해본 적이 있나요?",
+        options: [
+            { text: "생각해본 적 없어요", score: 1 },
+            { text: "어떻게 만드는지 궁금해요", score: 2 },
+            { text: "몇 번 만들어봤어요", score: 3 },
+            { text: "자주 활용하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 챗봇에게 이메일이나 문서 작성을 요청해본 적 있나요?",
+        options: [
+            { text: "생각해본 적 없어요", score: 1 },
+            { text: "시도는 해봤지만 잘 안 됐어요", score: 2 },
+            { text: "가끔 초안 작성에 활용해요", score: 3 },
+            { text: "거의 모든 문서 초안을 AI로 시작해요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 도구를 사용할 때 데이터 보안에 대해 얼마나 신경 쓰나요?",
+        options: [
+            { text: "생각해본 적 없어요", score: 1 },
+            { text: "중요하다는 건 알지만 잘 모르겠어요", score: 2 },
+            { text: "중요한 정보는 피하려고 해요", score: 3 },
+            { text: "철저하게 필터링해서 사용해요", score: 4 }
+        ]
+    },
+    {
+        text: "음성 AI 어시스턴트(시리, 알렉사, 구글 어시스턴트 등)를 얼마나 사용하나요?",
+        options: [
+            { text: "거의 안 써요", score: 1 },
+            { text: "가끔 간단한 명령만 써요", score: 2 },
+            { text: "자주 활용하는 편이에요", score: 3 },
+            { text: "일상에 깊이 통합되어 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI가 추천해주는 콘텐츠(넷플릭스, 유튜브 등)에 대해 어떻게 생각하세요?",
+        options: [
+            { text: "추천 알고리즘을 의식한 적 없어요", score: 1 },
+            { text: "있다는 건 알지만 신경 안 써요", score: 2 },
+            { text: "추천이 왜 나오는지 궁금해요", score: 3 },
+            { text: "알고리즘을 이해하고 활용해요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 기술이 내 직업에 미칠 영향에 대해 어떻게 생각하세요?",
+        options: [
+            { text: "관계없을 것 같아요", score: 1 },
+            { text: "약간 걱정되긴 해요", score: 2 },
+            { text: "준비가 필요하다고 생각해요", score: 3 },
+            { text: "적극적으로 학습하고 대비 중이에요", score: 4 }
+        ]
+    },
+    {
+        text: "코딩을 전혀 모르는 사람도 AI를 활용할 수 있다고 생각하세요?",
+        options: [
+            { text: "불가능할 것 같아요", score: 1 },
+            { text: "어렵겠지만 가능할 수도요", score: 2 },
+            { text: "충분히 가능하다고 생각해요", score: 3 },
+            { text: "이미 직접 활용하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI가 만든 콘텐츠와 사람이 만든 콘텐츠를 구분할 수 있나요?",
+        options: [
+            { text: "전혀 구분 못해요", score: 1 },
+            { text: "가끔은 구분할 수 있어요", score: 2 },
+            { text: "대부분 구분할 수 있어요", score: 3 },
+            { text: "거의 항상 구분할 수 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 학습 데이터의 편향성(bias)에 대해 들어본 적 있나요?",
+        options: [
+            { text: "처음 들어봐요", score: 1 },
+            { text: "들어는 봤는데 잘 모르겠어요", score: 2 },
+            { text: "어느 정도 이해하고 있어요", score: 3 },
+            { text: "심각한 문제로 인식하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI를 사용해서 학습하거나 공부해본 적 있나요?",
+        options: [
+            { text: "없어요", score: 1 },
+            { text: "검색 정도만 해봤어요", score: 2 },
+            { text: "문제 풀이나 설명을 받아봤어요", score: 3 },
+            { text: "체계적으로 학습 도구로 활용하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 챗봇과 대화할 때 감정이나 공감을 느낀 적 있나요?",
+        options: [
+            { text: "전혀 없어요", score: 1 },
+            { text: "가끔 그런 느낌이 들어요", score: 2 },
+            { text: "종종 느껴요", score: 3 },
+            { text: "자주 느끼지만 기계라는 걸 인지하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 생성 콘텐츠의 윤리적 문제에 대해 어떻게 생각하세요?",
+        options: [
+            { text: "생각해본 적 없어요", score: 1 },
+            { text: "문제가 있다고 들었어요", score: 2 },
+            { text: "중요한 이슈라고 생각해요", score: 3 },
+            { text: "항상 고민하며 사용해요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 번역기를 얼마나 신뢰하나요?",
+        options: [
+            { text: "완전히 믿어요", score: 1 },
+            { text: "대부분 믿지만 가끔 의심해요", score: 2 },
+            { text: "참고만 하고 항상 검증해요", score: 3 },
+            { text: "문맥과 뉘앙스를 확인하며 활용해요", score: 4 }
+        ]
+    },
+    {
+        text: "내가 AI에게 던진 질문이 어디에 저장되는지 아시나요?",
+        options: [
+            { text: "생각해본 적 없어요", score: 1 },
+            { text: "어딘가 저장되는 건 알아요", score: 2 },
+            { text: "서비스마다 다르다는 걸 알아요", score: 3 },
+            { text: "저장 정책을 확인하고 사용해요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 기술의 발전 속도에 대해 어떻게 느끼세요?",
+        options: [
+            { text: "잘 모르겠어요", score: 1 },
+            { text: "빠르긴 한 것 같아요", score: 2 },
+            { text: "너무 빠르다고 생각해요", score: 3 },
+            { text: "변화를 추적하며 적응하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 음성 합성(보이스피싱 방지 등)의 위험성에 대해 알고 계신가요?",
+        options: [
+            { text: "처음 들어봐요", score: 1 },
+            { text: "뉴스에서 본 것 같아요", score: 2 },
+            { text: "심각한 문제라고 생각해요", score: 3 },
+            { text: "대응 방법까지 알고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "무료 AI 서비스와 유료 AI 서비스의 차이를 알고 계신가요?",
+        options: [
+            { text: "차이를 모르겠어요", score: 1 },
+            { text: "성능 차이가 있다는 건 알아요", score: 2 },
+            { text: "기능 제한과 데이터 활용 차이를 알아요", score: 3 },
+            { text: "용도에 맞게 선택해서 사용해요", score: 4 }
+        ]
+    },
+    {
+        text: "AI를 활용한 자동화로 시간을 절약한 경험이 있나요?",
+        options: [
+            { text: "없어요", score: 1 },
+            { text: "시도해봤지만 효과가 없었어요", score: 2 },
+            { text: "몇 번 성공했어요", score: 3 },
+            { text: "정기적으로 자동화를 활용하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI가 예술 작품을 만드는 것에 대해 어떻게 생각하세요?",
+        options: [
+            { text: "예술이 아니라고 생각해요", score: 1 },
+            { text: "도구일 뿐이라고 생각해요", score: 2 },
+            { text: "새로운 형태의 예술이라고 생각해요", score: 3 },
+            { text: "예술의 정의가 변화하고 있다고 봐요", score: 4 }
+        ]
+    },
+    {
+        text: "챗GPT 같은 AI에게 코드 작성을 요청해본 적 있나요?",
+        options: [
+            { text: "없어요", score: 1 },
+            { text: "해봤지만 잘 안 됐어요", score: 2 },
+            { text: "간단한 코드는 받아봤어요", score: 3 },
+            { text: "자주 활용하고 코드도 수정할 수 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 모델을 직접 학습시켜본 적이 있거나 관심이 있나요?",
+        options: [
+            { text: "전혀 관심 없어요", score: 1 },
+            { text: "궁금하긴 한데 어려울 것 같아요", score: 2 },
+            { text: "배워보고 싶어요", score: 3 },
+            { text: "이미 시도해봤거나 공부 중이에요", score: 4 }
+        ]
+    },
+    {
+        text: "딥페이크 기술의 위험성에 대해 알고 계신가요?",
+        options: [
+            { text: "처음 들어봐요", score: 1 },
+            { text: "들어는 봤어요", score: 2 },
+            { text: "심각한 문제라고 생각해요", score: 3 },
+            { text: "판별 방법까지 공부했어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 사용 시 환경적 영향(전력 소비 등)을 고려해보신 적 있나요?",
+        options: [
+            { text: "생각해본 적 없어요", score: 1 },
+            { text: "들어는 봤지만 잘 모르겠어요", score: 2 },
+            { text: "중요한 문제라고 생각해요", score: 3 },
+            { text: "지속가능한 AI에 관심있어요", score: 4 }
+        ]
+    },
+    {
+        text: "프롬프트를 작성할 때 특별한 기법이나 패턴을 사용하나요?",
+        options: [
+            { text: "그냥 생각나는 대로 써요", score: 1 },
+            { text: "가끔 다듬어보긴 해요", score: 2 },
+            { text: "몇 가지 패턴을 알고 있어요", score: 3 },
+            { text: "체계적인 프롬프트 전략을 사용해요", score: 4 }
+        ]
+    },
+    {
+        text: "AI가 내린 결정이나 추천을 맹목적으로 따르나요?",
+        options: [
+            { text: "대부분 그대로 따라요", score: 1 },
+            { text: "가끔 의심은 해요", score: 2 },
+            { text: "항상 검증하고 판단해요", score: 3 },
+            { text: "참고만 하고 최종 결정은 스스로 해요", score: 4 }
+        ]
+    },
+    {
+        text: "AI를 활용한 사이드 프로젝트나 창업을 고민해보신 적 있나요?",
+        options: [
+            { text: "없어요", score: 1 },
+            { text: "막연하게 생각해봤어요", score: 2 },
+            { text: "구체적으로 계획하고 있어요", score: 3 },
+            { text: "이미 진행하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 관련 커뮤니티나 스터디에 참여해보신 적 있나요?",
+        options: [
+            { text: "없어요", score: 1 },
+            { text: "찾아는 봤어요", score: 2 },
+            { text: "가입은 했지만 활동은 안 해요", score: 3 },
+            { text: "적극적으로 참여하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 기술의 민주화(누구나 쉽게 접근)에 대해 어떻게 생각하세요?",
+        options: [
+            { text: "생각해본 적 없어요", score: 1 },
+            { text: "좋은 것 같기도 하고 위험한 것 같기도 해요", score: 2 },
+            { text: "중요한 이슈라고 생각해요", score: 3 },
+            { text: "장단점을 모두 이해하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "오픈소스 AI 프로젝트에 관심이 있거나 기여해본 적 있나요?",
+        options: [
+            { text: "들어본 적 없어요", score: 1 },
+            { text: "알고는 있지만 어려워요", score: 2 },
+            { text: "관심 있어서 찾아보고 있어요", score: 3 },
+            { text: "이미 사용하거나 기여하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI와 함께 일하는 '미래의 나'를 상상해본 적 있나요?",
+        options: [
+            { text: "상상해본 적 없어요", score: 1 },
+            { text: "막연하게는 생각해봤어요", score: 2 },
+            { text: "구체적으로 그려보고 있어요", score: 3 },
+            { text: "이미 그 미래를 만들어가고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 윤리 가이드라인이나 정책에 대해 관심있으세요?",
+        options: [
+            { text: "처음 들어봐요", score: 1 },
+            { text: "있다는 건 알아요", score: 2 },
+            { text: "중요하다고 생각해서 찾아봤어요", score: 3 },
+            { text: "정책 변화를 꾸준히 팔로우해요", score: 4 }
+        ]
+    },
+    {
+        text: "AI가 대체할 수 없는 인간 고유의 영역이 뭐라고 생각하세요?",
+        options: [
+            { text: "잘 모르겠어요", score: 1 },
+            { text: "감정이나 창의성이요", score: 2 },
+            { text: "공감과 윤리적 판단이요", score: 3 },
+            { text: "복합적인 인간성 전반이라고 봐요", score: 4 }
+        ]
+    },
+    {
+        text: "당신의 AI 활용 수준을 한 문장으로 표현한다면?",
+        options: [
+            { text: "이제 막 시작했어요", score: 1 },
+            { text: "배우는 중이에요", score: 2 },
+            { text: "실전에서 활용하고 있어요", score: 3 },
+            { text: "AI와 함께 성장하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 기술 발전에 대한 당신의 전반적인 태도는?",
+        options: [
+            { text: "무관심해요", score: 1 },
+            { text: "조금 두려워요", score: 2 },
+            { text: "기대되지만 신중해요", score: 3 },
+            { text: "적극적으로 참여하고 싶어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 도구의 접근성에 대해 어떻게 생각하세요?",
+        options: [
+            { text: "아직 어려워요", score: 1 },
+            { text: "점점 쉬워지고 있어요", score: 2 },
+            { text: "누구나 쓸 수 있게 됐어요", score: 3 },
+            { text: "더 많은 사람에게 알려주고 싶어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI 관련 교육이나 강의를 수강해본 적 있나요?",
+        options: [
+            { text: "없어요", score: 1 },
+            { text: "관심은 있어요", score: 2 },
+            { text: "몇 개 들어봤어요", score: 3 },
+            { text: "꾸준히 학습하고 있어요", score: 4 }
+        ]
+    },
+    {
+        text: "AI가 당신의 일상에서 차지하는 비중은?",
+        options: [
+            { text: "거의 없어요", score: 1 },
+            { text: "가끔 사용해요", score: 2 },
+            { text: "자주 사용해요", score: 3 },
+            { text: "필수불가결해요", score: 4 }
+        ]
     }
 ];
+
+// 실제 테스트에 사용될 질문들 (50개 중 랜덤 12개)
+let levelQuestions = [];
+
+// 랜덤으로 12개 질문 선택하는 함수
+function selectRandomQuestions() {
+    const shuffled = [...allLevelQuestions].sort(() => Math.random() - 0.5);
+    levelQuestions = shuffled.slice(0, 12);
+}
 
 // ============================================
 // 데이터: 레벨 결과
@@ -806,6 +1148,9 @@ function startLevelTest() {
     // 초기화
     currentQuestionIndex = 0;
     userAnswers = [];
+    
+    // 랜덤 질문 선택
+    selectRandomQuestions();
 
     // 섹션 표시/숨김
     showLevelTestPage();
@@ -954,6 +1299,9 @@ function showResult() {
 function resetTest() {
     currentQuestionIndex = 0;
     userAnswers = [];
+    
+    // 랜덤 질문 초기화 (다시 테스트 시 새로운 문제가 나오도록)
+    levelQuestions = [];
 
     // 홈 페이지 표시
     showHomePage();
