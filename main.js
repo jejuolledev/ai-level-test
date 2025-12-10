@@ -729,9 +729,14 @@ function initializeEventListeners() {
     document.getElementById('quizHintBtn').addEventListener('click', showQuizAnswer);
 
     // 퀴즈 - 홈으로 가기 버튼
-    document.getElementById('quizHomeBtn').addEventListener('click', goToHomeFromQuiz);
-    document.getElementById('reviewHomeBtn').addEventListener('click', goToHomeFromQuiz);
-    document.getElementById('reviewHomeBtnBottom').addEventListener('click', goToHomeFromQuiz);
+    document.getElementById('quizHomeBtn').addEventListener('click', goToHome);
+    document.getElementById('quizResultHomeBtn').addEventListener('click', goToHome);
+    document.getElementById('reviewHomeBtn').addEventListener('click', goToHome);
+    document.getElementById('reviewHomeBtnBottom').addEventListener('click', goToHome);
+
+    // 레벨 테스트 - 홈으로 가기 버튼
+    document.getElementById('levelTestHomeBtn').addEventListener('click', goToHome);
+    document.getElementById('resultHomeBtn').addEventListener('click', goToHome);
 }
 
 // 뒤로가기 버튼 처리
@@ -1377,19 +1382,26 @@ function resetQuiz() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function goToHomeFromQuiz() {
+function goToHome() {
     // 퀴즈 관련 상태 초기화
     currentQuizIndex = 0;
     quizAnswers = [];
     activeQuizQuestions = [];
 
-    // 모든 퀴즈 관련 섹션 숨기기
+    // 레벨 테스트 관련 상태 초기화
+    currentQuestionIndex = 0;
+    userAnswers = [];
+
+    // 모든 섹션 숨기기
     document.getElementById('quiz').classList.add('hidden');
     document.getElementById('quizResultContainer').classList.add('hidden');
     document.getElementById('quizReviewContainer').classList.add('hidden');
+    document.getElementById('levelTest').classList.add('hidden');
+    document.getElementById('result').classList.add('hidden');
 
     // 홈 페이지 표시
-    showHomePage();
+    document.getElementById('hero').classList.remove('hidden');
+    document.getElementById('intro').classList.remove('hidden');
 
     // 히스토리에 추가
     history.pushState({ page: 'home' }, '', '');

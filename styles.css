@@ -511,32 +511,51 @@ body {
     margin: 0 auto;
 }
 
-.quiz-home-button-container {
+/* 홈으로 가기 버튼 - 귀여운 디자인 */
+.home-button-container {
     margin-bottom: 24px;
     padding-bottom: 16px;
     border-bottom: 1px solid #e2e8f0;
 }
 
-.quiz-home-btn {
-    background: transparent;
-    border: 2px solid #cbd5e0;
-    color: #4a5568;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 600;
+.home-btn {
+    background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+    border: none;
+    color: #2d3748;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(253, 203, 110, 0.4);
 }
 
-.quiz-home-btn:hover {
-    background: #f7fafc;
-    border-color: #667eea;
-    color: #667eea;
-    transform: translateX(-2px);
+.home-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(253, 203, 110, 0.6);
+    background: linear-gradient(135deg, #fdcb6e 0%, #ffeaa7 100%);
+}
+
+.home-btn:active {
+    transform: translateY(0) scale(1);
+}
+
+.home-icon {
+    font-size: 1.2rem;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
 }
 
 .quiz-header {
