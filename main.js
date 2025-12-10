@@ -1494,21 +1494,14 @@ async function shareLevelResult() {
 
 // 퀴즈 결과 공유
 async function shareQuizResult() {
+    const emoji = document.getElementById('quizResultEmoji').textContent;
+    const level = document.getElementById('quizResultLevel').textContent;
+    const summary = document.getElementById('quizResultSummary').textContent;
     const score = document.getElementById('quizScore').textContent;
     const total = document.getElementById('quizTotal').textContent;
-    const comment = document.getElementById('quizComment').textContent;
-
-    let emoji = '🎯';
-    if (score <= 3) {
-        emoji = '🌱';
-    } else if (score <= 7) {
-        emoji = '💪';
-    } else {
-        emoji = '🚀';
-    }
 
     const shareUrl = 'https://moahub.co.kr';
-    const shareText = `${emoji} AI 덕후 퀴즈 결과: ${score}/${total}점!\n\n${comment}\n\n나도 AI 상식 퀴즈 도전하기 👉 ${shareUrl}`;
+    const shareText = `${emoji} 나의 AI 덕후 레벨은 "${level}"!\n\n${summary}\n${score}/${total}점 달성!\n\n나도 AI 상식 퀴즈 도전하기 👉 ${shareUrl}`;
 
     try {
         // Web Share API 지원 여부 확인
