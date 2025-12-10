@@ -966,113 +966,8 @@ body {
     max-width: 300px;
 }
 
-/* 공유 버튼 - 크고 귀여운 디자인 (레벨 테스트용) */
-.share-button-container {
-    margin-top: 40px;
-    text-align: center;
-    padding: 32px 20px;
-    background: linear-gradient(135deg, #fff5f5 0%, #f0f9ff 100%);
-    border-radius: 20px;
-    border: 3px dashed #ffd6e8;
-}
-
-.share-btn {
-    background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 50%, #6c5ce7 100%);
-    border: none;
-    color: white;
-    padding: 20px 48px;
-    border-radius: 60px;
-    font-size: 1.3rem;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    box-shadow: 0 8px 30px rgba(255, 107, 157, 0.5);
-    position: relative;
-    overflow: hidden;
-    min-width: 280px;
-    justify-content: center;
-}
-
-.share-btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.4);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-}
-
-.share-btn::after {
-    content: '친구에게도 공유해보세요! 💌';
-    position: absolute;
-    bottom: -35px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #ff6b9d;
-    white-space: nowrap;
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-
-.share-btn:hover::before {
-    width: 400px;
-    height: 400px;
-}
-
-.share-btn:hover::after {
-    opacity: 1;
-    bottom: -30px;
-}
-
-.share-btn:hover {
-    transform: translateY(-5px) scale(1.08);
-    box-shadow: 0 12px 40px rgba(255, 107, 157, 0.7);
-    background: linear-gradient(135deg, #c06c84 0%, #ff6b9d 50%, #6c5ce7 100%);
-}
-
-.share-btn:active {
-    transform: translateY(-2px) scale(1.05);
-}
-
-.share-icon {
-    font-size: 1.8rem;
-    animation: sharePulse 2s ease-in-out infinite;
-    position: relative;
-    z-index: 1;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-}
-
-@keyframes sharePulse {
-    0%, 100% {
-        transform: scale(1) rotate(0deg);
-    }
-    25% {
-        transform: scale(1.2) rotate(-15deg);
-    }
-    50% {
-        transform: scale(1) rotate(0deg);
-    }
-    75% {
-        transform: scale(1.2) rotate(15deg);
-    }
-}
-
-.share-btn span:last-child {
-    position: relative;
-    z-index: 1;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* 공유 버튼 - 퀴즈 결과용 (다른 버튼들과 비슷하게) */
+/* 공유 버튼 - 통일된 디자인 (레벨 테스트 + 퀴즈 결과 동일) */
+.share-button-container,
 .share-button-container-simple {
     margin-top: 32px;
     padding-top: 32px;
@@ -1080,6 +975,7 @@ body {
     text-align: center;
 }
 
+.share-btn,
 .btn-share {
     background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 50%, #6c5ce7 100%);
     border: none;
@@ -1098,17 +994,19 @@ body {
     justify-content: center;
 }
 
+.share-btn:hover,
 .btn-share:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
     background: linear-gradient(135deg, #c06c84 0%, #ff6b9d 50%, #6c5ce7 100%);
 }
 
+.share-btn:active,
 .btn-share:active {
     transform: translateY(-1px);
 }
 
-.btn-share .share-icon {
+.share-icon {
     font-size: 1.3rem;
     animation: shareGentle 2s ease-in-out infinite;
 }
