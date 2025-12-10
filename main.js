@@ -1420,21 +1420,19 @@ async function shareLevelResult() {
     const levelName = document.getElementById('resultLevel').textContent;
     const summary = document.getElementById('resultSummary').textContent;
 
-    const shareText = `${levelEmoji} 나의 AI 레벨은 "${levelName}"!\n\n${summary}\n\n나도 내 AI 레벨 테스트 해보기 👉`;
-    const shareUrl = window.location.origin + window.location.pathname;
+    const shareUrl = 'https://moahub.co.kr';
+    const shareText = `${levelEmoji} 나의 AI 레벨은 "${levelName}"!\n\n${summary}\n\n나도 내 AI 레벨 테스트 해보기 👉 ${shareUrl}`;
 
     try {
         // Web Share API 지원 여부 확인
         if (navigator.share) {
             await navigator.share({
                 title: '나의 AI 레벨 테스트 결과',
-                text: shareText,
-                url: shareUrl
+                text: shareText
             });
         } else {
             // Web Share API를 지원하지 않으면 클립보드 복사
-            const fullText = `${shareText}\n${shareUrl}`;
-            await navigator.clipboard.writeText(fullText);
+            await navigator.clipboard.writeText(shareText);
             alert('결과가 클립보드에 복사되었습니다! 🎉\n원하는 곳에 붙여넣기 해주세요.');
         }
     } catch (err) {
@@ -1442,8 +1440,7 @@ async function shareLevelResult() {
         if (err.name !== 'AbortError') {
             console.error('공유 실패:', err);
             // 대체 방법: 텍스트를 직접 표시
-            const fallbackText = `${shareText}\n${shareUrl}`;
-            prompt('아래 텍스트를 복사하여 공유해주세요:', fallbackText);
+            prompt('아래 텍스트를 복사하여 공유해주세요:', shareText);
         }
     }
 }
@@ -1463,21 +1460,19 @@ async function shareQuizResult() {
         emoji = '🚀';
     }
 
-    const shareText = `${emoji} AI 덕후 퀴즈 결과: ${score}/${total}점!\n\n${comment}\n\n나도 AI 상식 퀴즈 도전하기 👉`;
-    const shareUrl = window.location.origin + window.location.pathname;
+    const shareUrl = 'https://moahub.co.kr';
+    const shareText = `${emoji} AI 덕후 퀴즈 결과: ${score}/${total}점!\n\n${comment}\n\n나도 AI 상식 퀴즈 도전하기 👉 ${shareUrl}`;
 
     try {
         // Web Share API 지원 여부 확인
         if (navigator.share) {
             await navigator.share({
                 title: 'AI 덕후 퀴즈 결과',
-                text: shareText,
-                url: shareUrl
+                text: shareText
             });
         } else {
             // Web Share API를 지원하지 않으면 클립보드 복사
-            const fullText = `${shareText}\n${shareUrl}`;
-            await navigator.clipboard.writeText(fullText);
+            await navigator.clipboard.writeText(shareText);
             alert('결과가 클립보드에 복사되었습니다! 🎉\n원하는 곳에 붙여넣기 해주세요.');
         }
     } catch (err) {
@@ -1485,8 +1480,7 @@ async function shareQuizResult() {
         if (err.name !== 'AbortError') {
             console.error('공유 실패:', err);
             // 대체 방법: 텍스트를 직접 표시
-            const fallbackText = `${shareText}\n${shareUrl}`;
-            prompt('아래 텍스트를 복사하여 공유해주세요:', fallbackText);
+            prompt('아래 텍스트를 복사하여 공유해주세요:', shareText);
         }
     }
 }

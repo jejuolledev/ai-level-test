@@ -914,30 +914,34 @@ body {
     max-width: 300px;
 }
 
-/* 공유 버튼 - 귀여운 디자인 */
+/* 공유 버튼 - 크고 귀여운 디자인 */
 .share-button-container {
-    margin-top: 32px;
+    margin-top: 40px;
     text-align: center;
-    padding-top: 24px;
-    border-top: 2px dashed #e2e8f0;
+    padding: 32px 20px;
+    background: linear-gradient(135deg, #fff5f5 0%, #f0f9ff 100%);
+    border-radius: 20px;
+    border: 3px dashed #ffd6e8;
 }
 
 .share-btn {
-    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 50%, #6c5ce7 100%);
     border: none;
-    color: #2d3748;
-    padding: 14px 32px;
-    border-radius: 50px;
-    font-size: 1.05rem;
-    font-weight: 700;
+    color: white;
+    padding: 20px 48px;
+    border-radius: 60px;
+    font-size: 1.3rem;
+    font-weight: 800;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 15px rgba(168, 237, 234, 0.4);
+    gap: 14px;
+    box-shadow: 0 8px 30px rgba(255, 107, 157, 0.5);
     position: relative;
     overflow: hidden;
+    min-width: 280px;
+    justify-content: center;
 }
 
 .share-btn::before {
@@ -948,50 +952,72 @@ body {
     width: 0;
     height: 0;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.4);
     transform: translate(-50%, -50%);
     transition: width 0.6s, height 0.6s;
 }
 
+.share-btn::after {
+    content: '친구에게도 공유해보세요! 💌';
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ff6b9d;
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
 .share-btn:hover::before {
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 400px;
+}
+
+.share-btn:hover::after {
+    opacity: 1;
+    bottom: -30px;
 }
 
 .share-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(168, 237, 234, 0.6);
+    transform: translateY(-5px) scale(1.08);
+    box-shadow: 0 12px 40px rgba(255, 107, 157, 0.7);
+    background: linear-gradient(135deg, #c06c84 0%, #ff6b9d 50%, #6c5ce7 100%);
 }
 
 .share-btn:active {
-    transform: translateY(-1px) scale(1.02);
+    transform: translateY(-2px) scale(1.05);
 }
 
 .share-icon {
-    font-size: 1.3rem;
-    animation: shareFloat 3s ease-in-out infinite;
+    font-size: 1.8rem;
+    animation: sharePulse 2s ease-in-out infinite;
     position: relative;
     z-index: 1;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
 }
 
-@keyframes shareFloat {
+@keyframes sharePulse {
     0%, 100% {
-        transform: translateY(0) rotate(0deg);
+        transform: scale(1) rotate(0deg);
     }
     25% {
-        transform: translateY(-5px) rotate(-10deg);
+        transform: scale(1.2) rotate(-15deg);
     }
     50% {
-        transform: translateY(-8px) rotate(0deg);
+        transform: scale(1) rotate(0deg);
     }
     75% {
-        transform: translateY(-5px) rotate(10deg);
+        transform: scale(1.2) rotate(15deg);
     }
 }
 
 .share-btn span:last-child {
     position: relative;
     z-index: 1;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* 푸터 */
