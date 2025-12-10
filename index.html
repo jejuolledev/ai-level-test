@@ -180,7 +180,19 @@
                         <span class="score-total">/ <span id="quizTotal">0</span></span>
                     </div>
                     <p class="quiz-comment" id="quizComment"></p>
-                    <button class="btn-primary" id="quizRetryBtn">다시 풀어보기</button>
+                    <div class="result-buttons">
+                        <button class="btn-secondary" id="quizRetryBtn">다시 풀어보기</button>
+                        <button class="btn-primary" id="quizReviewBtn">정답 풀이 보기 📝</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 정답 풀이 섹션 -->
+            <div class="quiz-review-container hidden" id="quizReviewContainer">
+                <div class="quiz-review-card">
+                    <h3>정답 풀이</h3>
+                    <div id="quizReviewList"></div>
+                    <button class="btn-primary" id="quizReviewRetryBtn">다시 풀어보기</button>
                 </div>
             </div>
         </div>

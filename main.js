@@ -721,6 +721,10 @@ function initializeEventListeners() {
     // 퀴즈 - 재시도 버튼
     document.getElementById('quizRetryBtn').addEventListener('click', resetQuiz);
 
+    // 퀴즈 - 정답 풀이 버튼
+    document.getElementById('quizReviewBtn').addEventListener('click', showQuizReview);
+    document.getElementById('quizReviewRetryBtn').addEventListener('click', resetQuiz);
+
     // 퀴즈 - 답 보기 버튼
     document.getElementById('quizHintBtn').addEventListener('click', showQuizAnswer);
 }
@@ -1107,74 +1111,40 @@ function renderQuizQuestion() {
 
     // hint container 초기화 (이전 메시지 제거)
     const hintContainer = document.querySelector('.quiz-hint-container');
-    const existingMessage = hintContainer.querySelector('.quiz-answer-message');
+    const existingMessage = hintContainer ? hintContainer.querySelector('.quiz-answer-message') : null;
     if (existingMessage) {
         existingMessage.remove();
     }
 
-    // 정답 및 해설 영역 업데이트
+    // 답변 영역은 항상 숨김 (마지막 결과에서만 표시)
     const answerSection = document.getElementById('quizAnswerSection');
+    if (answerSection) {
+        answerSection.classList.add('hidden');
+    }
+
+    // 힌트 버튼 상태 업데이트
     const hintBtn = document.getElementById('quizHintBtn');
-
     if (quizAnswers[currentQuizIndex] !== null) {
-        // 답을 선택했거나 힌트를 본 경우
+        // 답을 선택했거나 힌트를 봤으면 힌트 버튼 숨김
+        if (hintBtn) {
+            hintBtn.style.display = 'none';
+        }
 
-        if (quizAnswers[currentQuizIndex] === -1) {
-            // 힌트를 본 경우
-            // 정답 option에 selected 클래스 추가
-            const correctButton = document.querySelector(`#quizOptionsContainer .option-button[data-index="${question.correctIndex}"]`);
-            if (correctButton) {
-                correctButton.classList.add('selected');
-            }
-
-            // 힌트 버튼 숨기기
-            if (hintBtn) {
-                hintBtn.style.display = 'none';
-            }
-
-            // 정답 메시지를 hint container에 표시
-            if (hintContainer) {
-                const answerMessage = document.createElement('div');
-                answerMessage.className = 'quiz-answer-message';
-                answerMessage.innerHTML = `
-                    <div class="quiz-answer">
-                        <div class="quiz-answer-label">
-                            <span style="color: #f59e0b; font-weight: 700;">💡 정답은 ${question.correctIndex + 1}번입니다!</span>
-                        </div>
-                        <div class="quiz-explanation">${question.explanation}</div>
+        // 힌트를 본 경우 힌트 메시지 표시
+        if (quizAnswers[currentQuizIndex] === -1 && hintContainer) {
+            const answerMessage = document.createElement('div');
+            answerMessage.className = 'quiz-answer-message';
+            answerMessage.innerHTML = `
+                <div class="quiz-answer">
+                    <div class="quiz-answer-label">
+                        <span style="color: #f59e0b; font-weight: 700;">💡 힌트를 확인했습니다. 마지막에 정답을 확인하세요!</span>
                     </div>
-                `;
-                hintContainer.appendChild(answerMessage);
-            }
-
-            // answerSection은 숨김
-            answerSection.classList.add('hidden');
-        } else {
-            // 답을 선택한 경우 정답/오답 표시
-            const isCorrect = quizAnswers[currentQuizIndex] === question.correctIndex;
-            const answerResult = document.getElementById('quizAnswerResult');
-
-            if (isCorrect) {
-                answerResult.innerHTML = '✅ 정답입니다!';
-                answerResult.style.color = '#48bb78';
-            } else {
-                answerResult.innerHTML = `❌ 오답입니다. 정답은 ${question.correctIndex + 1}번입니다.`;
-                answerResult.style.color = '#f56565';
-            }
-
-            document.getElementById('quizExplanation').textContent = question.explanation;
-            answerSection.classList.remove('hidden');
-
-            // 답을 선택했으면 힌트 버튼 숨기기
-            if (hintBtn) {
-                hintBtn.style.display = 'none';
-            }
+                </div>
+            `;
+            hintContainer.appendChild(answerMessage);
         }
     } else {
-        // 아직 답을 선택하지 않은 경우
-        answerSection.classList.add('hidden');
-
-        // 힌트 버튼 표시 및 초기화
+        // 아직 답을 선택하지 않은 경우 힌트 버튼 표시
         if (hintBtn) {
             hintBtn.style.display = 'block';
             hintBtn.classList.remove('used');
@@ -1198,22 +1168,6 @@ function selectQuizOption(index) {
     // 선택한 버튼에 selected 클래스 추가
     document.querySelector(`#quizOptionsContainer .option-button[data-index="${index}"]`).classList.add('selected');
 
-    // 정답 및 해설 표시
-    const question = activeQuizQuestions[currentQuizIndex];
-    const isCorrect = index === question.correctIndex;
-    const answerResult = document.getElementById('quizAnswerResult');
-
-    if (isCorrect) {
-        answerResult.innerHTML = '✅ 정답입니다!';
-        answerResult.style.color = '#48bb78';
-    } else {
-        answerResult.innerHTML = `❌ 오답입니다. 정답은 ${question.correctIndex + 1}번입니다.`;
-        answerResult.style.color = '#f56565';
-    }
-
-    document.getElementById('quizExplanation').textContent = question.explanation;
-    document.getElementById('quizAnswerSection').classList.remove('hidden');
-
     // 힌트 버튼 숨기기 (답을 선택했으므로)
     const hintBtn = document.getElementById('quizHintBtn');
     if (hintBtn) {
@@ -1230,16 +1184,8 @@ function showQuizAnswer() {
         return;
     }
 
-    const question = activeQuizQuestions[currentQuizIndex];
-
     // 답을 봤다고 표시 (-1로 저장)
     quizAnswers[currentQuizIndex] = -1;
-
-    // 정답 option에 selected 클래스 추가
-    const correctButton = document.querySelector(`#quizOptionsContainer .option-button[data-index="${question.correctIndex}"]`);
-    if (correctButton) {
-        correctButton.classList.add('selected');
-    }
 
     // 힌트 버튼 숨기기
     const hintBtn = document.getElementById('quizHintBtn');
@@ -1247,7 +1193,7 @@ function showQuizAnswer() {
         hintBtn.style.display = 'none';
     }
 
-    // 정답 메시지를 hint container에 표시
+    // 힌트 메시지를 hint container에 표시
     const hintContainer = document.querySelector('.quiz-hint-container');
     if (hintContainer) {
         const answerMessage = document.createElement('div');
@@ -1255,9 +1201,8 @@ function showQuizAnswer() {
         answerMessage.innerHTML = `
             <div class="quiz-answer">
                 <div class="quiz-answer-label">
-                    <span style="color: #f59e0b; font-weight: 700;">💡 정답은 ${question.correctIndex + 1}번입니다!</span>
+                    <span style="color: #f59e0b; font-weight: 700;">💡 힌트를 확인했습니다. 마지막에 정답을 확인하세요!</span>
                 </div>
-                <div class="quiz-explanation">${question.explanation}</div>
             </div>
         `;
         hintContainer.appendChild(answerMessage);
@@ -1336,9 +1281,70 @@ function showQuizResult() {
     document.getElementById('quizResultContainer').scrollIntoView({ behavior: 'smooth' });
 }
 
-function resetQuiz() {
-    // 결과 숨기고 퀴즈 카드 보이기
+function showQuizReview() {
+    // 정답 풀이 리스트 생성
+    const reviewList = document.getElementById('quizReviewList');
+    reviewList.innerHTML = '';
+
+    activeQuizQuestions.forEach((question, index) => {
+        const userAnswer = quizAnswers[index];
+        const isCorrect = userAnswer === question.correctIndex;
+        const isHintUsed = userAnswer === -1;
+
+        const reviewItem = document.createElement('div');
+        reviewItem.className = 'quiz-review-item';
+
+        if (isHintUsed) {
+            reviewItem.classList.add('hint-used');
+        } else if (isCorrect) {
+            reviewItem.classList.add('correct');
+        } else {
+            reviewItem.classList.add('wrong');
+        }
+
+        let resultText = '';
+        let resultClass = '';
+
+        if (isHintUsed) {
+            resultText = '💡 힌트를 사용했습니다';
+            resultClass = 'hint-used';
+        } else if (isCorrect) {
+            resultText = '✅ 정답입니다!';
+            resultClass = 'correct';
+        } else {
+            resultText = `❌ 오답입니다. 내 답: ${userAnswer + 1}번`;
+            resultClass = 'wrong';
+        }
+
+        reviewItem.innerHTML = `
+            <div class="quiz-review-question">
+                <div class="quiz-review-number">${index + 1}</div>
+                <div>${question.text}</div>
+            </div>
+            <div class="quiz-review-result ${resultClass}">${resultText}</div>
+            <div class="quiz-review-result" style="color: #667eea;">
+                <strong>정답:</strong> ${question.correctIndex + 1}번 - ${question.options[question.correctIndex]}
+            </div>
+            <div class="quiz-review-explanation">
+                <strong>💬 해설:</strong><br>${question.explanation}
+            </div>
+        `;
+
+        reviewList.appendChild(reviewItem);
+    });
+
+    // 결과 숨기고 정답 풀이 보이기
     document.getElementById('quizResultContainer').classList.add('hidden');
+    document.getElementById('quizReviewContainer').classList.remove('hidden');
+
+    // 스크롤
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    // 결과와 정답 풀이 숨기고 퀴즈 카드 보이기
+    document.getElementById('quizResultContainer').classList.add('hidden');
+    document.getElementById('quizReviewContainer').classList.add('hidden');
     document.querySelector('.quiz-card').classList.remove('hidden');
 
     // 퀴즈 초기화 + 렌더링
