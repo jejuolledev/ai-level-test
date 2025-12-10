@@ -727,6 +727,11 @@ function initializeEventListeners() {
 
     // 퀴즈 - 답 보기 버튼
     document.getElementById('quizHintBtn').addEventListener('click', showQuizAnswer);
+
+    // 퀴즈 - 홈으로 가기 버튼
+    document.getElementById('quizHomeBtn').addEventListener('click', goToHomeFromQuiz);
+    document.getElementById('reviewHomeBtn').addEventListener('click', goToHomeFromQuiz);
+    document.getElementById('reviewHomeBtnBottom').addEventListener('click', goToHomeFromQuiz);
 }
 
 // 뒤로가기 버튼 처리
@@ -1369,5 +1374,26 @@ function resetQuiz() {
     history.replaceState({ page: 'quiz' }, '', '');
 
     // 퀴즈 섹션 상단으로 스크롤
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToHomeFromQuiz() {
+    // 퀴즈 관련 상태 초기화
+    currentQuizIndex = 0;
+    quizAnswers = [];
+    activeQuizQuestions = [];
+
+    // 모든 퀴즈 관련 섹션 숨기기
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('quizResultContainer').classList.add('hidden');
+    document.getElementById('quizReviewContainer').classList.add('hidden');
+
+    // 홈 페이지 표시
+    showHomePage();
+
+    // 히스토리에 추가
+    history.pushState({ page: 'home' }, '', '');
+
+    // 최상단으로 스크롤
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }

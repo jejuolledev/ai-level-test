@@ -131,6 +131,11 @@
     <section id="quiz" class="quiz-section hidden">
         <div class="container">
             <div class="quiz-card">
+                <!-- 홈으로 가기 버튼 -->
+                <div class="quiz-home-button-container">
+                    <button class="quiz-home-btn" id="quizHomeBtn">← 홈으로</button>
+                </div>
+
                 <!-- 진행률 -->
                 <div class="progress-container">
                     <div class="progress-text">
@@ -190,9 +195,17 @@
             <!-- 정답 풀이 섹션 -->
             <div class="quiz-review-container hidden" id="quizReviewContainer">
                 <div class="quiz-review-card">
+                    <!-- 홈으로 가기 버튼 -->
+                    <div class="quiz-home-button-container">
+                        <button class="quiz-home-btn" id="reviewHomeBtn">← 홈으로</button>
+                    </div>
+
                     <h3>정답 풀이</h3>
                     <div id="quizReviewList"></div>
-                    <button class="btn-primary" id="quizReviewRetryBtn">다시 풀어보기</button>
+                    <div class="review-bottom-buttons">
+                        <button class="btn-primary" id="quizReviewRetryBtn">다시 풀어보기</button>
+                        <button class="btn-secondary" id="reviewHomeBtnBottom">홈으로 가기</button>
+                    </div>
                 </div>
             </div>
         </div>
