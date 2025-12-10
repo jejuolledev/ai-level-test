@@ -1297,22 +1297,105 @@ function showQuizResult() {
         emoji = '🌱';
         level = 'AI 새싹';
         summary = '호기심 가득한 AI 입문자';
-        description = '이제 막 AI 세계의 문을 두드리기 시작했어요. 조금씩 배워가다 보면 금방 전문가가 될 수 있어요! MCP, RAG 같은 용어들이 낯설지만, 하나씩 알아가는 재미가 있을 거예요.';
+        description = `
+            <div style="margin-bottom: 16px;">
+                <strong style="color: #667eea; font-size: 1.15rem;">💬 당신의 AI 상식 수준</strong><br>
+                이제 막 AI 세계의 문을 두드리기 시작했어요. MCP, RAG, 벡터 DB 같은 용어들이 아직 낯설지만, 걱정 마세요! 모든 전문가도 이 지점에서 시작했답니다.
+            </div>
+            <div style="margin-bottom: 16px;">
+                <strong style="color: #667eea; font-size: 1.15rem;">✨ 이 단계의 특징</strong><br>
+                • ChatGPT를 가끔 써보는 정도<br>
+                • AI 뉴스를 보면 신기하지만 용어가 어려움<br>
+                • 프롬프트 엔지니어링이 뭔지 궁금한 단계<br>
+                • AI 도구가 많다는 건 알지만 차이를 잘 모름
+            </div>
+            <div>
+                <strong style="color: #667eea; font-size: 1.15rem;">🎯 다음 레벨로 가는 팁</strong><br>
+                • 유튜브에서 "프롬프트 엔지니어링 기초" 영상 하나 찾아보기<br>
+                • MCP가 뭔지 간단히 검색해보기<br>
+                • ChatGPT에게 "역할 지정"해서 질문해보기 (예: "너는 영어 선생님이야")<br>
+                • AI 상식 퀴즈 다시 풀면서 해설 꼼꼼히 읽어보기
+            </div>
+        `;
     } else if (correctCount <= 7) {
         emoji = '💪';
         level = 'AI 탐험가';
         summary = '실력이 쌓여가는 중급자';
-        description = 'AI 상식, 꽤 준비되어 있네요! 이 정도면 주변 사람들에게 조언해줄 수 있는 수준이에요. 프롬프트 엔지니어링과 벡터 DB 같은 개념도 어느 정도 이해하고 계시네요.';
+        description = `
+            <div style="margin-bottom: 16px;">
+                <strong style="color: #667eea; font-size: 1.15rem;">💬 당신의 AI 상식 수준</strong><br>
+                AI 기본 개념은 잘 알고 있어요! 프롬프트 작성법도 어느 정도 익숙하고, RAG나 벡터 DB 같은 용어도 들어봤죠. 이 정도면 주변 사람들에게 AI 활용법을 조언해줄 수 있는 수준이에요.
+            </div>
+            <div style="margin-bottom: 16px;">
+                <strong style="color: #667eea; font-size: 1.15rem;">✨ 이 단계의 특징</strong><br>
+                • 프롬프트를 구체적으로 작성할 줄 앎<br>
+                • ChatGPT 외에 Claude, Gemini도 써봄<br>
+                • RAG, 임베딩 같은 용어를 대략 이해함<br>
+                • AI의 한계(환각)를 알고 검증하는 습관이 있음
+            </div>
+            <div>
+                <strong style="color: #667eea; font-size: 1.15rem;">🎯 다음 레벨로 가는 팁</strong><br>
+                • n8n이나 Zapier로 간단한 자동화 워크플로 만들어보기<br>
+                • MCP 프로토콜이 왜 중요한지 깊게 공부해보기<br>
+                • 벡터 DB(Pinecone, Weaviate 등)를 실제로 써보기<br>
+                • Few-shot 프롬프트 기법 연습해보기<br>
+                • AI 관련 커뮤니티나 뉴스레터 구독하기
+            </div>
+        `;
     } else if (correctCount <= 10) {
         emoji = '🚀';
         level = 'AI 마스터';
         summary = '전문가 수준의 AI 지식 보유자';
-        description = 'AI 덕후 인증 완료! 주변 사람들한테 강의해도 되겠어요. n8n, MCP, RAG 같은 고급 개념까지 척척! 정말 대단해요! 🎉';
+        description = `
+            <div style="margin-bottom: 16px;">
+                <strong style="color: #667eea; font-size: 1.15rem;">💬 당신의 AI 상식 수준</strong><br>
+                AI 덕후 인증 완료! 🎉 n8n, MCP, RAG, 벡터 DB, 임베딩, Temperature 조절까지 고급 개념을 모두 이해하고 있어요. 주변 사람들에게 AI 활용법을 가르쳐줄 수 있는 멘토 레벨입니다.
+            </div>
+            <div style="margin-bottom: 16px;">
+                <strong style="color: #667eea; font-size: 1.15rem;">✨ 이 단계의 특징</strong><br>
+                • 프롬프트 엔지니어링 기법을 자유자재로 활용<br>
+                • 여러 AI 도구를 상황에 맞게 선택해서 사용<br>
+                • RAG 시스템 구조를 이해하고 구현 가능<br>
+                • API를 통한 AI 서비스 연동 경험이 있음<br>
+                • AI 트렌드를 꾸준히 팔로우함
+            </div>
+            <div>
+                <strong style="color: #667eea; font-size: 1.15rem;">🎯 다음 레벨로 가는 팁</strong><br>
+                • 오픈소스 LLM(LLaMA, Mistral 등)을 로컬에서 돌려보기<br>
+                • 파인튜닝(Fine-tuning) 실습해보기<br>
+                • 프롬프트 체인이나 Agent 시스템 설계해보기<br>
+                • AI 관련 블로그나 기술 아티클 작성해보기<br>
+                • 커뮤니티에서 초보자들을 도와주기
+            </div>
+        `;
     } else {
         emoji = '👑';
         level = 'AI 전설';
         summary = '누구에게도 지지 않는 AI 덕후';
-        description = '완벽합니다! 당신은 진정한 AI 전문가예요. 임베딩, 파인튜닝, 벡터 검색까지 모두 꿰뚫고 있네요. AI 커뮤니티에서 당신의 지식을 나누면 많은 사람들에게 도움이 될 거예요! 🏆';
+        description = `
+            <div style="margin-bottom: 16px;">
+                <strong style="color: #667eea; font-size: 1.15rem;">💬 당신의 AI 상식 수준</strong><br>
+                완벽합니다! 🏆 당신은 진정한 AI 전문가예요. 임베딩, 파인튜닝, 벡터 검색, MCP, n8n, RAG 시스템까지 모든 고급 개념을 꿰뚫고 있네요. AI 업계에서도 인정받을 수준입니다!
+            </div>
+            <div style="margin-bottom: 16px;">
+                <strong style="color: #667eea; font-size: 1.15rem;">✨ 이 단계의 특징</strong><br>
+                • AI 모델의 작동 원리를 깊이 이해함<br>
+                • API 활용은 물론 직접 시스템 설계 가능<br>
+                • 프롬프트 최적화를 위한 A/B 테스트 수행<br>
+                • 여러 AI 도구를 조합한 복잡한 워크플로 구축<br>
+                • 최신 AI 논문과 기술 트렌드를 실시간으로 팔로우<br>
+                • 보안, 윤리, 법적 이슈까지 고려한 의사결정
+            </div>
+            <div>
+                <strong style="color: #667eea; font-size: 1.15rem;">🎯 다음 단계 추천</strong><br>
+                • AI 커뮤니티에 지식 공유하기 (블로그, 유튜브, 강연 등)<br>
+                • 오픈소스 AI 프로젝트에 기여하기<br>
+                • 실무에 AI를 혁신적으로 적용한 사례 만들기<br>
+                • AI 스터디나 밋업을 주도해보기<br>
+                • 초보자들을 위한 가이드나 튜토리얼 제작하기<br>
+                • 당신의 경험과 인사이트가 많은 사람들에게 영감이 될 거예요!
+            </div>
+        `;
     }
 
     // 결과 표시
