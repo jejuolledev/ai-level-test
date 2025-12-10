@@ -214,20 +214,38 @@
                         </button>
                     </div>
 
-                    <h3>퀴즈 결과</h3>
-                    <div class="quiz-score">
-                        <span class="score-number" id="quizScore">0</span>
-                        <span class="score-total">/ <span id="quizTotal">0</span></span>
+                    <!-- 결과 헤더 -->
+                    <div class="result-header">
+                        <div class="quiz-result-emoji" id="quizResultEmoji">🎯</div>
+                        <h2 class="quiz-result-level" id="quizResultLevel">AI 탐험가</h2>
+                        <p class="quiz-result-summary" id="quizResultSummary">실력이 쌓여가는 중급자</p>
                     </div>
-                    <p class="quiz-comment" id="quizComment"></p>
+
+                    <!-- 점수 표시 -->
+                    <div class="quiz-score-box">
+                        <div class="quiz-score">
+                            <span class="score-number" id="quizScore">0</span>
+                            <span class="score-total">/ <span id="quizTotal">0</span></span>
+                        </div>
+                    </div>
+
+                    <!-- 상세 설명 -->
+                    <div class="quiz-result-description">
+                        <p id="quizResultDescription"></p>
+                    </div>
+
+                    <!-- 액션 버튼 (상단) -->
                     <div class="result-buttons">
                         <button class="btn-secondary" id="quizRetryBtn">다시 풀어보기</button>
                         <button class="btn-primary" id="quizReviewBtn">정답 풀이 보기 📝</button>
                     </div>
 
-                    <!-- 공유 버튼 -->
-                    <div class="share-button-container">
-                        <button class="share-btn" id="shareQuizResultBtn">
+                    <!-- 인라인 정답 풀이 -->
+                    <div id="quizReviewListInline" class="quiz-review-list-inline hidden"></div>
+
+                    <!-- 공유 버튼 (하단) -->
+                    <div class="share-button-container-simple">
+                        <button class="btn-share" id="shareQuizResultBtn">
                             <span class="share-icon">📤</span>
                             <span>내 결과 공유하기</span>
                         </button>
