@@ -1503,13 +1503,11 @@ async function shareLevelResult() {
         if (shareBtn) shareBtn.closest('.share-button-container').style.display = originalShareDisplay;
         if (homeBtn) homeBtn.closest('.home-button-container').style.display = originalHomeDisplay;
 
-        const imageUrl = canvas.toDataURL('image/png');
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const file = new File([blob], 'ai-level-result.png', { type: 'image/png' });
         
-        // 1. Web Share API 파일 공유 시도 (모바일 사파리 등)
+        // 1. Web Share API 파일 공유 시도 (모바일 사파리, 안드로이드 크롬)
         try {
-            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-            const file = new File([blob], 'ai-level-result.png', { type: 'image/png' });
-
             if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
                     title: '나의 AI 레벨 테스트 결과',
@@ -1523,64 +1521,17 @@ async function shareLevelResult() {
             console.log('파일 공유 실패, 다른 방법 시도:', shareErr);
         }
 
-        // 2. 이미지를 새 창에 열기 (크롬, 파이어폭스 등)
+        // 2. 클립보드에 이미지 복사 (데스크톱 크롬 등)
         try {
-            const newWindow = window.open();
-            if (newWindow) {
-                newWindow.document.write(`
-                    <html>
-                    <head>
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>AI 레벨 테스트 결과</title>
-                        <style>
-                            body { 
-                                margin: 0; 
-                                padding: 20px; 
-                                background: #f0f0f0; 
-                                text-align: center; 
-                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-                            }
-                            img { 
-                                max-width: 100%; 
-                                height: auto; 
-                                box-shadow: 0 4px 20px rgba(0,0,0,0.2); 
-                                border-radius: 10px;
-                                cursor: pointer;
-                            }
-                            .info { 
-                                margin: 20px auto; 
-                                padding: 20px; 
-                                background: white; 
-                                border-radius: 12px; 
-                                color: #333;
-                                max-width: 600px;
-                                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                            }
-                            .info strong { 
-                                color: #667eea;
-                                font-size: 1.1em;
-                            }
-                            .info p {
-                                margin: 10px 0;
-                                line-height: 1.6;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <img src="${imageUrl}" alt="AI 레벨 테스트 결과" onclick="alert('이미지를 우클릭(PC) 또는 길게 눌러(모바일) 저장/공유할 수 있습니다.')">
-                        <div class="info">
-                            <p><strong>📱 모바일:</strong> 이미지를 길게 눌러 저장 또는 공유</p>
-                            <p><strong>💻 PC:</strong> 이미지를 우클릭하여 '다른 이름으로 저장'</p>
-                            <p style="margin-top: 20px; color: #667eea; font-weight: bold;">🌐 moahub.co.kr</p>
-                        </div>
-                    </body>
-                    </html>
-                `);
-                newWindow.document.close();
-                return;
-            }
-        } catch (popupErr) {
-            console.log('새 창 열기 실패:', popupErr);
+            await navigator.clipboard.write([
+                new ClipboardItem({
+                    'image/png': blob
+                })
+            ]);
+            alert('✅ 이미지가 클립보드에 복사되었습니다!\n\n카톡, 메신저 등 원하는 곳에 붙여넣기(Ctrl+V 또는 Cmd+V) 하세요! 🎉');
+            return;
+        } catch (clipboardErr) {
+            console.log('클립보드 복사 실패:', clipboardErr);
         }
 
         // 3. 텍스트로 폴백
@@ -1664,13 +1615,11 @@ async function shareQuizResult() {
         if (reviewBtn) reviewBtn.closest('.result-buttons').style.display = originalReviewDisplay;
         if (wasReviewVisible && reviewList) reviewList.classList.remove('hidden');
 
-        const imageUrl = canvas.toDataURL('image/png');
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const file = new File([blob], 'ai-quiz-result.png', { type: 'image/png' });
         
-        // 1. Web Share API 파일 공유 시도 (모바일 사파리 등)
+        // 1. Web Share API 파일 공유 시도 (모바일 사파리, 안드로이드 크롬)
         try {
-            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-            const file = new File([blob], 'ai-quiz-result.png', { type: 'image/png' });
-
             if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
                     title: 'AI 덕후 퀴즈 결과',
@@ -1684,64 +1633,17 @@ async function shareQuizResult() {
             console.log('파일 공유 실패, 다른 방법 시도:', shareErr);
         }
 
-        // 2. 이미지를 새 창에 열기 (크롬, 파이어폭스 등)
+        // 2. 클립보드에 이미지 복사 (데스크톱 크롬 등)
         try {
-            const newWindow = window.open();
-            if (newWindow) {
-                newWindow.document.write(`
-                    <html>
-                    <head>
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>AI 덕후 퀴즈 결과</title>
-                        <style>
-                            body { 
-                                margin: 0; 
-                                padding: 20px; 
-                                background: #f0f0f0; 
-                                text-align: center; 
-                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-                            }
-                            img { 
-                                max-width: 100%; 
-                                height: auto; 
-                                box-shadow: 0 4px 20px rgba(0,0,0,0.2); 
-                                border-radius: 10px;
-                                cursor: pointer;
-                            }
-                            .info { 
-                                margin: 20px auto; 
-                                padding: 20px; 
-                                background: white; 
-                                border-radius: 12px; 
-                                color: #333;
-                                max-width: 600px;
-                                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                            }
-                            .info strong { 
-                                color: #667eea;
-                                font-size: 1.1em;
-                            }
-                            .info p {
-                                margin: 10px 0;
-                                line-height: 1.6;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <img src="${imageUrl}" alt="AI 덕후 퀴즈 결과" onclick="alert('이미지를 우클릭(PC) 또는 길게 눌러(모바일) 저장/공유할 수 있습니다.')">
-                        <div class="info">
-                            <p><strong>📱 모바일:</strong> 이미지를 길게 눌러 저장 또는 공유</p>
-                            <p><strong>💻 PC:</strong> 이미지를 우클릭하여 '다른 이름으로 저장'</p>
-                            <p style="margin-top: 20px; color: #667eea; font-weight: bold;">🌐 moahub.co.kr</p>
-                        </div>
-                    </body>
-                    </html>
-                `);
-                newWindow.document.close();
-                return;
-            }
-        } catch (popupErr) {
-            console.log('새 창 열기 실패:', popupErr);
+            await navigator.clipboard.write([
+                new ClipboardItem({
+                    'image/png': blob
+                })
+            ]);
+            alert('✅ 이미지가 클립보드에 복사되었습니다!\n\n카톡, 메신저 등 원하는 곳에 붙여넣기(Ctrl+V 또는 Cmd+V) 하세요! 🎉');
+            return;
+        } catch (clipboardErr) {
+            console.log('클립보드 복사 실패:', clipboardErr);
         }
 
         // 3. 텍스트로 폴백
