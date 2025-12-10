@@ -1402,7 +1402,7 @@ function showQuizResult() {
     document.getElementById('quizResultEmoji').textContent = emoji;
     document.getElementById('quizResultLevel').textContent = level;
     document.getElementById('quizResultSummary').textContent = summary;
-    document.getElementById('quizResultDescription').textContent = description;
+    document.getElementById('quizResultDescription').innerHTML = description; // HTML 렌더링하도록 변경
     document.getElementById('quizScore').textContent = correctCount;
     document.getElementById('quizTotal').textContent = activeQuizQuestions.length;
 
