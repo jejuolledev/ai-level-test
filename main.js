@@ -1137,7 +1137,13 @@ function renderQuizQuestion() {
             answerMessage.innerHTML = `
                 <div class="quiz-answer">
                     <div class="quiz-answer-label">
-                        <span style="color: #f59e0b; font-weight: 700;">💡 힌트를 확인했습니다. 마지막에 정답을 확인하세요!</span>
+                        <span style="color: #f59e0b; font-weight: 700;">💡 AI의 힌트</span>
+                    </div>
+                    <div class="quiz-explanation" style="color: #4a5568; line-height: 1.6; margin-top: 8px;">
+                        ${question.explanation}
+                    </div>
+                    <div style="color: #718096; font-size: 0.9rem; margin-top: 12px; font-style: italic;">
+                        ※ 힌트를 참고하여 답을 선택해주세요. 최종 결과에서 정답을 확인할 수 있습니다.
                     </div>
                 </div>
             `;
@@ -1184,7 +1190,9 @@ function showQuizAnswer() {
         return;
     }
 
-    // 답을 봤다고 표시 (-1로 저장)
+    const question = activeQuizQuestions[currentQuizIndex];
+
+    // 힌트를 봤다고 표시 (-1로 저장)
     quizAnswers[currentQuizIndex] = -1;
 
     // 힌트 버튼 숨기기
@@ -1193,7 +1201,7 @@ function showQuizAnswer() {
         hintBtn.style.display = 'none';
     }
 
-    // 힌트 메시지를 hint container에 표시
+    // 힌트 설명을 hint container에 표시
     const hintContainer = document.querySelector('.quiz-hint-container');
     if (hintContainer) {
         const answerMessage = document.createElement('div');
@@ -1201,14 +1209,20 @@ function showQuizAnswer() {
         answerMessage.innerHTML = `
             <div class="quiz-answer">
                 <div class="quiz-answer-label">
-                    <span style="color: #f59e0b; font-weight: 700;">💡 힌트를 확인했습니다. 마지막에 정답을 확인하세요!</span>
+                    <span style="color: #f59e0b; font-weight: 700;">💡 AI의 힌트</span>
+                </div>
+                <div class="quiz-explanation" style="color: #4a5568; line-height: 1.6; margin-top: 8px;">
+                    ${question.explanation}
+                </div>
+                <div style="color: #718096; font-size: 0.9rem; margin-top: 12px; font-style: italic;">
+                    ※ 힌트를 참고하여 답을 선택해주세요. 최종 결과에서 정답을 확인할 수 있습니다.
                 </div>
             </div>
         `;
         hintContainer.appendChild(answerMessage);
     }
 
-    // 다음 버튼 활성화
+    // 다음 버튼은 여전히 비활성화 상태 유지 (답을 선택해야 활성화)
     updateQuizNavigationButtons();
 }
 
@@ -1219,8 +1233,9 @@ function updateQuizNavigationButtons() {
     // 이전 버튼 (첫 질문이 아닐 때만 활성화)
     prevBtn.disabled = currentQuizIndex === 0;
 
-    // 다음 버튼 (답을 선택했을 때만 활성화)
-    nextBtn.disabled = quizAnswers[currentQuizIndex] === null;
+    // 다음 버튼 (실제 답을 선택했을 때만 활성화, 힌트만 본 경우(-1)는 비활성화)
+    const currentAnswer = quizAnswers[currentQuizIndex];
+    nextBtn.disabled = currentAnswer === null || currentAnswer === -1;
 
     // 마지막 질문이면 버튼 텍스트 변경
     if (currentQuizIndex === activeQuizQuestions.length - 1) {
