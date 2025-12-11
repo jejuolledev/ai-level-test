@@ -210,7 +210,8 @@ body::before {
 
     .hero-content {
         padding: 20px 20px;
-        gap: 12px;
+        gap: 8px;
+        /* Reduced gap */
         position: relative;
     }
 
@@ -235,30 +236,35 @@ body::before {
 
     .hero-title {
         font-size: 1.8rem;
-        margin-bottom: 8px;
-        line-height: 1.3;
-        margin-top: 10px;
+        margin-bottom: 6px;
+        /* Reduced */
+        line-height: 1.2;
+        margin-top: 5px;
     }
 
     .hero-subtitle {
         font-size: 1rem;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
+        /* Reduced */
     }
 
     .hero-description {
         font-size: 0.9rem;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
+        /* Reduced */
         line-height: 1.4;
         word-break: keep-all;
     }
 
     .robot-emoji {
         font-size: 40px;
-        margin-bottom: 5px;
+        margin-bottom: 4px;
+        /* Reduced */
     }
 
     .hero-buttons {
-        gap: 10px;
+        gap: 8px;
+        /* Reduced */
     }
 
     .cta-button {
@@ -271,11 +277,20 @@ body::before {
 
 /* 소개 섹션 */
 .intro-section {
-    padding: 30px 20px;
-    /* Reduced from 60px 20px if likely large */
+    padding: 20px 20px;
+    /* Further reduced from 30px */
     background: transparent;
     position: relative;
     z-index: 10;
+    margin-top: -10px;
+    /* Pull it up slightly closer to hero */
+}
+
+/* Fix for sticky focus state */
+.option-button:focus {
+    outline: none;
+    /* Remove default browser outline */
+    /* Ensure it doesn't look 'selected' unless it has the class */
 }
 
 .section-title {

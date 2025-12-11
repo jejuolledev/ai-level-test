@@ -1218,6 +1218,11 @@ function selectOption(index) {
     isProcessing = true;
     userAnswers[currentQuestionIndex] = index;
 
+    // 포커스 제거 (모바일/데스크탑에서 :focus 상태가 유지되어 '선택된 것처럼' 보이는 현상 방지)
+    if (document.activeElement) {
+        document.activeElement.blur();
+    }
+
     // 모든 버튼에서 selected 클래스 제거
     document.querySelectorAll('.option-button').forEach(btn => {
         btn.classList.remove('selected');
@@ -1226,7 +1231,7 @@ function selectOption(index) {
     // 선택한 버튼에 selected 클래스 추가
     document.querySelector(`.option-button[data-index="${index}"]`).classList.add('selected');
 
-    // 300ms -> 50ms 딜레이 후 다음 질문으로 (바로 넘어가는 느낌)
+    // 50ms 딜레이 후 다음 질문으로 (바로 넘어가는 느낌)
     setTimeout(() => {
         goToNextQuestion();
         isProcessing = false;
@@ -1548,6 +1553,11 @@ function selectQuizOption(index) {
 
     isQuizProcessing = true;
     quizAnswers[currentQuizIndex] = index;
+
+    // 포커스 제거
+    if (document.activeElement) {
+        document.activeElement.blur();
+    }
 
     // 모든 버튼에서 selected 클래스 제거
     document.querySelectorAll('#quizOptionsContainer .option-button').forEach(btn => {
