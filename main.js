@@ -1922,6 +1922,10 @@ async function shareLevelResult() {
         urlOverlay.textContent = '🌐 moahub.co.kr';
         element.appendChild(urlOverlay);
 
+        // Safari fix: Scroll to top prevents clipping
+        const originalScrollPos = window.scrollY;
+        window.scrollTo(0, 0);
+
         const canvas = await html2canvas(element, {
             scale: 2,
             backgroundColor: '#ffffff',
@@ -1929,6 +1933,9 @@ async function shareLevelResult() {
             useCORS: true,
             allowTaint: true
         });
+
+        // Restore scroll position
+        window.scrollTo(0, originalScrollPos);
 
         urlOverlay.remove();
         if (shareBtn) shareBtn.closest('.share-button-container').style.display = originalShareDisplay;
@@ -1965,7 +1972,21 @@ async function shareLevelResult() {
             console.log('클립보드 복사 실패:', clipboardErr);
         }
 
-        // 3. 텍스트로 폴백
+        // 3. 이미지 다운로드 폴백 (Chrome 등 공유 API 지원 안 하는 경우)
+        try {
+            const link = document.createElement('a');
+            link.download = 'ai-level-result.png';
+            link.href = canvas.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            alert('✅ 이미지가 저장되었습니다!\n\n갤러리에서 확인하고 공유해보세요! 🎉');
+            return;
+        } catch (downloadErr) {
+            console.log('이미지 다운로드 실패:', downloadErr);
+        }
+
+        // 4. 텍스트로 폴백
         const levelEmoji = document.getElementById('resultEmoji').textContent;
         const levelName = document.getElementById('resultLevel').textContent;
         const summary = document.getElementById('resultSummary').textContent;
@@ -2032,6 +2053,10 @@ async function shareQuizResult() {
         urlOverlay.textContent = '🌐 moahub.co.kr';
         element.appendChild(urlOverlay);
 
+        // Safari fix: Scroll to top prevents clipping
+        const originalScrollPos = window.scrollY;
+        window.scrollTo(0, 0);
+
         const canvas = await html2canvas(element, {
             scale: 2,
             backgroundColor: '#ffffff',
@@ -2039,6 +2064,9 @@ async function shareQuizResult() {
             useCORS: true,
             allowTaint: true
         });
+
+        // Restore scroll position
+        window.scrollTo(0, originalScrollPos);
 
         urlOverlay.remove();
         if (shareBtn) shareBtn.closest('.share-button-container-simple').style.display = originalShareDisplay;
@@ -2077,7 +2105,21 @@ async function shareQuizResult() {
             console.log('클립보드 복사 실패:', clipboardErr);
         }
 
-        // 3. 텍스트로 폴백
+        // 3. 이미지 다운로드 폴백 (Chrome 등 공유 API 지원 안 하는 경우)
+        try {
+            const link = document.createElement('a');
+            link.download = 'ai-quiz-result.png';
+            link.href = canvas.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            alert('✅ 이미지가 저장되었습니다!\n\n갤러리에서 확인하고 공유해보세요! 🎉');
+            return;
+        } catch (downloadErr) {
+            console.log('이미지 다운로드 실패:', downloadErr);
+        }
+
+        // 4. 텍스트로 폴백
         const emoji = document.getElementById('quizResultEmoji').textContent;
         const level = document.getElementById('quizResultLevel').textContent;
         const summary = document.getElementById('quizResultSummary').textContent;
