@@ -1249,6 +1249,8 @@ function goToPreviousQuestion() {
 function goToNextQuestion() {
     if (currentQuestionIndex < levelQuestions.length - 1) {
         currentQuestionIndex++;
+        // 다음 문제로 넘어갈 때 해당 문제의 기존 답을 초기화 (선택 안 된 상태로 만들기)
+        userAnswers[currentQuestionIndex] = undefined;
         renderQuestion();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
@@ -1261,14 +1263,21 @@ function showResult() {
     // 총점 계산
     let totalScore = 0;
     userAnswers.forEach((answerIndex, questionIndex) => {
+        // 답변이 없는 경우(undefined/null) 건너뛰거나 0점 처리
+        if (answerIndex === undefined || answerIndex === null) return;
+
         const question = levelQuestions[questionIndex];
-        totalScore += question.options[answerIndex].score;
+        if (question && question.options && question.options[answerIndex]) {
+            totalScore += question.options[answerIndex].score;
+        }
     });
 
     // 레벨 결정
     const result = levelResults.find(level =>
         totalScore >= level.minScore && totalScore <= level.maxScore
     );
+
+    // ... (rest of the function omitted for brevity, logic remains same)
 
     // 결과 화면 렌더링
     document.getElementById('resultEmoji').textContent = result.emoji;
@@ -1293,6 +1302,20 @@ function showResult() {
     history.pushState({ page: 'result' }, '', '');
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ... 
+
+function goToNextQuiz() {
+    if (currentQuizIndex < activeQuizQuestions.length - 1) {
+        currentQuizIndex++;
+        // 다음 퀴즈로 넘어갈 때 해당 문제의 답 초기화
+        quizAnswers[currentQuizIndex] = null;
+        renderQuizQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+        showQuizResult();
+    }
 }
 
 function resetTest() {
@@ -1597,7 +1620,7 @@ function showQuizAnswer() {
     // updateQuizNavigationButtons();
 }
 
-// function updateQuizNavigationButtons() { ... } // 삭제됨
+// ...
 
 function goToPreviousQuiz() {
     if (currentQuizIndex > 0) {
@@ -1610,6 +1633,8 @@ function goToPreviousQuiz() {
 function goToNextQuiz() {
     if (currentQuizIndex < activeQuizQuestions.length - 1) {
         currentQuizIndex++;
+        // 다음 퀴즈로 넘어갈 때 해당 문제의 기존 답을 초기화
+        quizAnswers[currentQuizIndex] = null;
         renderQuizQuestion();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
