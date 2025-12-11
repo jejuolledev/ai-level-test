@@ -163,6 +163,92 @@ body::before {
     }
 }
 
+/* Hero Home Button */
+.home-btn-hero {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.6);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    color: var(--text-sub);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(5px);
+}
+
+.home-btn-hero:hover {
+    background: white;
+    color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 600px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .hero-section {
+        padding: 60px 16px 40px;
+        min-height: auto;
+        display: block;
+        /* Remove flex centering to allow natural flow */
+    }
+
+    .hero-content {
+        padding: 40px 20px;
+        gap: 20px;
+        position: relative;
+        /* Context for absolute home button */
+    }
+
+    .hero-title {
+        font-size: 2rem;
+        /* reduced from 3.5rem */
+        margin-bottom: 12px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+        /* reduced from 1.5rem */
+        margin-bottom: 12px;
+    }
+
+    .hero-description {
+        font-size: 0.95rem;
+        margin-bottom: 24px;
+        line-height: 1.5;
+    }
+
+    .robot-emoji {
+        font-size: 60px;
+        /* reduced from 100px */
+    }
+
+    .cta-button {
+        font-size: 1.1rem;
+        padding: 14px 24px;
+        width: 100%;
+        /* Full width buttons on mobile */
+    }
+
+    .options-container {
+        gap: 10px;
+    }
+
+    .option-button {
+        padding: 16px;
+        font-size: 1rem;
+    }
+}
+
 /* 소개 섹션 */
 .intro-section {
     padding: 60px 20px;

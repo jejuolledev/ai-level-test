@@ -1048,6 +1048,12 @@ function initializeEventListeners() {
         startQuizBtn.addEventListener('click', showQuizSection);
     }
 
+    // 메인 홈 버튼 (랜딩 페이지로 이동)
+    const mainHomeBtn = document.getElementById('mainHomeBtn');
+    if (mainHomeBtn) {
+        mainHomeBtn.addEventListener('click', () => window.location.href = '/');
+    }
+
     // 레벨 테스트 - 이전/다음 버튼 (삭제됨)
     // document.getElementById('prevBtn').addEventListener('click', goToPreviousQuestion);
     // document.getElementById('nextBtn').addEventListener('click', goToNextQuestion);
