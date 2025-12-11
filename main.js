@@ -1056,9 +1056,9 @@ function initializeEventListeners() {
     document.getElementById('retestBtn').addEventListener('click', resetTest);
     document.getElementById('quizBtn').addEventListener('click', showQuizSection);
 
-    // 퀴즈 - 이전/다음 버튼
-    document.getElementById('quizPrevBtn').addEventListener('click', goToPreviousQuiz);
-    document.getElementById('quizNextBtn').addEventListener('click', goToNextQuiz);
+    // 퀴즈 - 이전/다음 버튼 (삭제됨)
+    // document.getElementById('quizPrevBtn').addEventListener('click', goToPreviousQuiz);
+    // document.getElementById('quizNextBtn').addEventListener('click', goToNextQuiz);
 
     // 퀴즈 - 재시도 버튼
     document.getElementById('quizRetryBtn').addEventListener('click', resetQuiz);
@@ -1222,11 +1222,11 @@ function selectOption(index) {
     // 선택한 버튼에 selected 클래스 추가
     document.querySelector(`.option-button[data-index="${index}"]`).classList.add('selected');
 
-    // 300ms 딜레이 후 다음 질문으로
+    // 300ms -> 50ms 딜레이 후 다음 질문으로 (바로 넘어가는 느낌)
     setTimeout(() => {
         goToNextQuestion();
         isProcessing = false;
-    }, 300);
+    }, 50);
 }
 
 // function updateNavigationButtons() { ... } // 삭제됨
@@ -1513,11 +1513,16 @@ function renderQuizQuestion() {
         }
     }
 
-    // 버튼 상태 업데이트
-    updateQuizNavigationButtons();
+    // 버튼 상태 업데이트 (삭제됨: 자동 넘김으로 변경)
+    // updateQuizNavigationButtons();
 }
 
+let isQuizProcessing = false;
+
 function selectQuizOption(index) {
+    if (isQuizProcessing) return;
+
+    isQuizProcessing = true;
     quizAnswers[currentQuizIndex] = index;
 
     // 모든 버튼에서 selected 클래스 제거
@@ -1534,8 +1539,11 @@ function selectQuizOption(index) {
         hintBtn.style.display = 'none';
     }
 
-    // 다음 버튼 활성화
-    updateQuizNavigationButtons();
+    // 다음 질문으로 자동 이동 (50ms 딜레이)
+    setTimeout(() => {
+        goToNextQuiz();
+        isQuizProcessing = false;
+    }, 50);
 }
 
 function showQuizAnswer() {
@@ -1576,28 +1584,13 @@ function showQuizAnswer() {
         hintContainer.appendChild(answerMessage);
     }
 
-    // 다음 버튼은 여전히 비활성화 상태 유지 (답을 선택해야 활성화)
-    updateQuizNavigationButtons();
+    // 질문 텍스트
+    // ... code omitted ... 
+    // 다음 버튼은 여전히 비활성화 상태 유지 (답을 선택해야 활성화) - 삭제됨
+    // updateQuizNavigationButtons();
 }
 
-function updateQuizNavigationButtons() {
-    const prevBtn = document.getElementById('quizPrevBtn');
-    const nextBtn = document.getElementById('quizNextBtn');
-
-    // 이전 버튼 (첫 질문이 아닐 때만 활성화)
-    prevBtn.disabled = currentQuizIndex === 0;
-
-    // 다음 버튼 (실제 답을 선택했을 때만 활성화, 힌트만 본 경우(-1)는 비활성화)
-    const currentAnswer = quizAnswers[currentQuizIndex];
-    nextBtn.disabled = currentAnswer === null || currentAnswer === -1;
-
-    // 마지막 질문이면 버튼 텍스트 변경
-    if (currentQuizIndex === activeQuizQuestions.length - 1) {
-        nextBtn.textContent = '결과 보기';
-    } else {
-        nextBtn.textContent = '다음 질문';
-    }
-}
+// function updateQuizNavigationButtons() { ... } // 삭제됨
 
 function goToPreviousQuiz() {
     if (currentQuizIndex > 0) {
