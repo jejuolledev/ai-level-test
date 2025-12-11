@@ -1200,10 +1200,7 @@ function renderQuestion() {
         button.textContent = option.text;
         button.dataset.index = index;
 
-        // 이미 선택한 답이 있으면 표시
-        if (userAnswers[currentQuestionIndex] === index) {
-            button.classList.add('selected');
-        }
+        // selection persistence logic removed to ensure clean state for every question
 
         button.addEventListener('click', () => selectOption(index));
         optionsContainer.appendChild(button);
@@ -1481,10 +1478,7 @@ function renderQuizQuestion() {
         button.textContent = option;
         button.dataset.index = index;
 
-        // 이미 선택한 답이 있으면 표시
-        if (quizAnswers[currentQuizIndex] === index) {
-            button.classList.add('selected');
-        }
+        // selection persistence logic removed
 
         button.addEventListener('click', () => selectQuizOption(index));
         optionsContainer.appendChild(button);
