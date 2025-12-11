@@ -127,7 +127,7 @@ body::before {
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     box-shadow: 0 10px 20px rgba(255, 154, 158, 0.4);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .cta-button:hover {
@@ -148,12 +148,19 @@ body::before {
 .robot-emoji {
     font-size: 100px;
     animation: bounce 2s infinite ease-in-out;
-    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.1));
 }
 
 @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
 }
 
 /* 소개 섹션 */
@@ -258,7 +265,7 @@ body::before {
     border-radius: 20px;
     overflow: hidden;
     border: 2px solid white;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .progress-fill {
@@ -277,14 +284,19 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, rgba(255,255,255,0.3) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.3) 75%, transparent 75%, transparent);
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.3) 75%, transparent 75%, transparent);
     background-size: 20px 20px;
     animation: moveStripe 1s linear infinite;
 }
 
 @keyframes moveStripe {
-    0% { background-position: 0 0; }
-    100% { background-position: 20px 0; }
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 20px 0;
+    }
 }
 
 .question-text {
@@ -315,7 +327,7 @@ body::before {
     text-align: left;
     font-weight: 500;
     position: relative;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
 .option-button:hover {
@@ -384,7 +396,7 @@ body::before {
     background: white;
     padding: 30px;
     border-radius: var(--radius-md);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     text-align: left;
     border: 2px solid #f0f0f0;
 }
@@ -399,7 +411,8 @@ body::before {
     display: inline-block;
 }
 
-.result-block p, .result-block li {
+.result-block p,
+.result-block li {
     font-size: 1.05rem;
     color: #555;
     line-height: 1.7;
@@ -436,7 +449,8 @@ body::before {
     }
 }
 
-.btn-primary, .btn-secondary {
+.btn-primary,
+.btn-secondary {
     padding: 18px 30px;
     font-family: var(--font-heading);
     font-size: 1.2rem;
@@ -516,14 +530,14 @@ body::before {
     gap: 6px;
     padding: 8px 16px;
     border-radius: 20px;
-    background: rgba(255,255,255,0.5);
+    background: rgba(255, 255, 255, 0.5);
     transition: all 0.2s ease;
 }
 
 .home-btn:hover {
     background: white;
     color: var(--primary-color);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 /* 퀴즈 섹션 */
@@ -609,8 +623,15 @@ body::before {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .quiz-answer-label {
@@ -625,24 +646,133 @@ body::before {
 }
 
 /* Result specific overrides for quiz */
+.quiz-result-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.quiz-result-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 50px 40px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+    text-align: center;
+    border: 3px solid white;
+    position: relative;
+    overflow: hidden;
+}
+
 .quiz-result-emoji {
-    font-size: 80px;
-    margin-bottom: 16px;
+    font-size: 100px;
+    margin-bottom: 20px;
+    animation: bounce 2s infinite;
+}
+
+.quiz-result-level {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+}
+
+.quiz-result-summary {
+    font-size: 1.3rem;
+    color: var(--text-sub);
+    font-weight: 500;
 }
 
 .quiz-score-box {
     background: #f0f4ff;
-    padding: 20px;
+    padding: 24px;
     border-radius: var(--radius-md);
-    margin: 20px 0;
+    margin: 30px auto;
     display: inline-block;
+    border: 2px solid #e0e7ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .quiz-score {
     font-family: var(--font-heading);
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     color: var(--secondary-color);
+    line-height: 1;
 }
+
+.score-total {
+    font-size: 1.5rem;
+    color: #a0aec0;
+    font-weight: 600;
+}
+
+.quiz-result-description {
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+    color: #4a5568;
+    line-height: 1.6;
+    background: white;
+    padding: 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid #eee;
+}
+
+/* 공유 버튼 컨테이너 단순화 */
+.share-button-container-simple {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-share {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-share:hover {
+    background: #5a6fd6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.quiz-review-list-inline {
+    margin-top: 40px;
+    text-align: left;
+    border-top: 2px dashed #e2e8f0;
+    padding-top: 30px;
+}
+
+.quiz-review-item {
+    background: white;
+    border: 2px solid #eee;
+    padding: 20px;
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+}
+
+.quiz-review-question {
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-main);
+}
+
+.quiz-review-answer {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
 
 .score-total {
     font-size: 1.5rem;
