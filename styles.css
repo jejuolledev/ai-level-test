@@ -198,20 +198,20 @@ body::before {
     }
 
     .hero-section {
-        padding: 50px 16px 20px;
-        /* Significantly reduced to pull content up */
-        min-height: auto;
-        /* Allow it to be shorter */
+        padding: 90px 16px 30px;
+        /* Increased top padding again to clear Fixed Home Button */
+        min-height: 70vh;
+        /* Restore some height so it feels like a proper "screen"/box */
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
+        /* Align top but with padding */
         position: relative;
     }
 
     .hero-content {
         padding: 20px 20px;
-        gap: 8px;
-        /* Reduced gap */
+        gap: 10px;
         position: relative;
     }
 
