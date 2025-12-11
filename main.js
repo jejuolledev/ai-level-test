@@ -1177,6 +1177,11 @@ function startLevelTest() {
 }
 
 function renderQuestion() {
+    // 렌더링 시 강제로 포커스 해제 (이전 화면의 버튼 포커스가 남지 않도록)
+    if (document.activeElement) {
+        document.activeElement.blur();
+    }
+
     const question = levelQuestions[currentQuestionIndex];
     const totalQuestions = levelQuestions.length;
 
@@ -1397,6 +1402,12 @@ function initQuizForDisplay() {
 
 function renderQuizQuestion() {
     console.log('=== renderQuizQuestion called ===');
+
+    // 렌더링 시 강제로 포커스 해제 (이전 화면의 버튼 포커스가 남지 않도록)
+    if (document.activeElement) {
+        document.activeElement.blur();
+    }
+
     console.log('activeQuizQuestions:', activeQuizQuestions);
     console.log('currentQuizIndex:', currentQuizIndex);
 
