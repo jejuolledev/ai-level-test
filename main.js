@@ -1140,6 +1140,11 @@ function showQuizPage() {
     document.getElementById('quiz').classList.remove('hidden');
 }
 
+function goToHome() {
+    showHomePage();
+    history.pushState({ page: 'home' }, '', '');
+}
+
 // ============================================
 // 레벨 테스트 관련 함수
 // ============================================
