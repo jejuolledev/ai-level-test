@@ -64,10 +64,11 @@ body::before {
 
 /* 히어로 섹션 */
 .hero-section {
-    padding: 80px 20px 60px;
+    padding: 60px 20px 60px;
     text-align: center;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
@@ -163,26 +164,25 @@ body::before {
     }
 }
 
-/* Hero Home Button */
+/* Hero Home Button - 박스 위에 배치 */
 .home-btn-hero {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-family: var(--font-heading);
-    font-size: 0.9rem;
-    color: var(--text-sub);
-    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 6px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    color: var(--text-sub);
+    cursor: pointer;
     transition: all 0.2s ease;
     backdrop-filter: blur(5px);
-    z-index: 1000;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    margin-bottom: 16px;
+    align-self: flex-start;
 }
 
 .home-btn-hero:hover {
@@ -198,14 +198,12 @@ body::before {
     }
 
     .hero-section {
-        padding: 90px 16px 30px;
-        /* Increased top padding again to clear Fixed Home Button */
-        min-height: 70vh;
-        /* Restore some height so it feels like a proper "screen"/box */
+        padding: 40px 16px 30px;
+        min-height: auto;
         display: flex;
         flex-direction: column;
+        align-items: center;
         justify-content: flex-start;
-        /* Align top but with padding */
         position: relative;
     }
 
@@ -215,23 +213,11 @@ body::before {
         position: relative;
     }
 
-    /* Move button OUT of flow logic and position it strictly relative to screen/section top */
+    /* 홈 버튼 - 박스 위에 배치 (모바일) */
     .home-btn-hero {
-        position: fixed;
-        top: 10px;
-        left: 10px;
         font-size: 0.85rem;
         padding: 8px 14px;
-        background: rgba(255, 255, 255, 0.95);
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        z-index: 9999;
-        text-decoration: none;
-        /* For anchor tag */
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        border-radius: 20px;
-        color: var(--text-sub);
+        margin-bottom: 12px;
     }
 
     .hero-title {
