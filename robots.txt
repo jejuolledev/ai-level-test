@@ -1,0 +1,9 @@
+# robots.txt for ai-level-test.moahub.co.kr
+User-agent: *
+Allow: /
+
+Sitemap: https://ai-level-test.moahub.co.kr/sitemap.xml
+
+Disallow: /.git/
+Disallow: /.github/
+Disallow: /README.md
