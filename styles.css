@@ -891,3 +891,55 @@ body::before {
     font-size: 1.5rem;
     color: #a0aec0;
 }
+
+/* 푸터 */
+.footer {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 30px 20px;
+    text-align: center;
+    margin-top: 60px;
+    border-top: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.footer-links {
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+.footer-links a {
+    color: var(--text-sub);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+}
+
+.footer-separator {
+    margin: 0 8px;
+    color: #ccc;
+}
+
+.footer p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 4px 0;
+}
+
+@media (max-width: 600px) {
+    .footer {
+        padding: 24px 16px;
+        margin-top: 40px;
+    }
+
+    .footer-links {
+        font-size: 0.85rem;
+    }
+
+    .footer p {
+        font-size: 0.85rem;
+    }
+}
