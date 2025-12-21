@@ -1309,6 +1309,12 @@ function showResult() {
     history.pushState({ page: 'result' }, '', '');
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // 공유 이미지 사전 준비 (백그라운드)
+    cachedLevelShareData = null;
+    setTimeout(() => {
+        prepareLevelShareData();
+    }, 500);
 }
 
 // ... 
@@ -1799,6 +1805,12 @@ function showQuizResult() {
 
     // 스크롤
     document.getElementById('quizResultContainer').scrollIntoView({ behavior: 'smooth' });
+
+    // 공유 이미지 사전 준비 (백그라운드)
+    cachedQuizShareData = null;
+    setTimeout(() => {
+        prepareQuizShareData();
+    }, 500);
 }
 
 function showQuizReview() {
@@ -1924,260 +1936,376 @@ function goToHome() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// 레벨 테스트 결과 공유 - 이미지로 공유 (크롬 호환)
-async function shareLevelResult() {
+// ============================================
+// 공유하기 기능 (tarot-daily 스타일 - iOS Chrome/Safari 대응)
+// ============================================
+
+// 공유 데이터 캐시 (사전 준비용)
+let cachedLevelShareData = null;
+let cachedQuizShareData = null;
+
+// 레벨 테스트 결과 공유 데이터 사전 준비 (prewarm)
+async function prepareLevelShareData() {
+    console.log('[share] prepareLevelShareData starting...');
+
+    const shareUrl = 'https://ai-level-test.moahub.co.kr';
+    const emoji = document.getElementById('resultEmoji')?.textContent || '';
+    const level = document.getElementById('resultLevel')?.textContent || '';
+    const summary = document.getElementById('resultSummary')?.textContent || '';
+    const habit = document.getElementById('resultHabit')?.textContent || '';
+    const strength = document.getElementById('resultStrength')?.textContent || '';
+    const missions = document.getElementById('resultMissions')?.innerText || '';
+
+    const shareText = `${emoji} 나의 AI 레벨은 "${level}"!\n\n${summary}\n\n나도 내 AI 레벨 테스트 해보기 👉 ${shareUrl}`;
+    const shareTitle = '나의 AI 레벨 테스트 결과';
+
     try {
-        const element = document.querySelector('.result-card');
-        if (!element) {
-            alert('결과 화면을 찾을 수 없습니다.');
-            return;
-        }
+        // 캡처용 영역 데이터 채우기
+        document.getElementById('captureLevelEmoji').textContent = emoji;
+        document.getElementById('captureLevelName').textContent = level;
+        document.getElementById('captureLevelSummary').textContent = summary;
+        document.getElementById('captureLevelHabit').textContent = habit;
+        document.getElementById('captureLevelStrength').textContent = strength;
+        document.getElementById('captureLevelMissions').textContent = missions;
 
-        const shareBtn = document.getElementById('shareLevelResultBtn');
-        const homeBtn = element.querySelector('.home-btn');
-        const originalShareDisplay = shareBtn ? shareBtn.closest('.share-button-container').style.display : '';
-        const originalHomeDisplay = homeBtn ? homeBtn.closest('.home-button-container').style.display : '';
+        // 캡처 영역 보이게 설정
+        const captureArea = document.getElementById('captureLevelArea');
+        captureArea.style.visibility = 'visible';
+        captureArea.style.left = '0';
+        captureArea.style.top = '0';
+        captureArea.style.position = 'fixed';
+        captureArea.style.zIndex = '-1';
 
-        if (shareBtn) shareBtn.closest('.share-button-container').style.display = 'none';
-        if (homeBtn) homeBtn.closest('.home-button-container').style.display = 'none';
-
-        const urlOverlay = document.createElement('div');
-        urlOverlay.style.cssText = `
-            text-align: center;
-            padding: 20px;
-            margin-top: 20px;
-            font-size: 1.1rem;
-            color: #667eea;
-            font-weight: 700;
-            border-top: 2px solid #e2e8f0;
-        `;
-        urlOverlay.textContent = '🌐 moahub.co.kr';
-        element.appendChild(urlOverlay);
-
-        // Safari fix: Scroll to top prevents clipping
-        const originalScrollPos = window.scrollY;
-        window.scrollTo(0, 0);
-
-        const canvas = await html2canvas(element, {
-            scale: 2,
-            backgroundColor: '#ffffff',
-            logging: false,
-            useCORS: true,
-            allowTaint: true
+        // requestAnimationFrame 2회로 최소 대기
+        await new Promise(resolve => {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(resolve);
+            });
         });
 
-        // Restore scroll position
-        window.scrollTo(0, originalScrollPos);
+        // html2canvas로 캡처 (scale 1.5 - iOS 파일 크기 제한 대응)
+        const canvas = await html2canvas(captureArea, {
+            backgroundColor: null,
+            scale: 1.5,
+            useCORS: true,
+            allowTaint: false,
+            logging: false,
+            width: captureArea.offsetWidth,
+            height: captureArea.offsetHeight,
+            windowWidth: captureArea.offsetWidth,
+            windowHeight: captureArea.offsetHeight
+        });
 
-        urlOverlay.remove();
-        if (shareBtn) shareBtn.closest('.share-button-container').style.display = originalShareDisplay;
-        if (homeBtn) homeBtn.closest('.home-button-container').style.display = originalHomeDisplay;
+        // 캡처 영역 다시 숨기기
+        captureArea.style.visibility = 'hidden';
+        captureArea.style.left = '-9999px';
+        captureArea.style.position = 'fixed';
 
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-        const file = new File([blob], 'ai-level-result.png', { type: 'image/png' });
+        // canvas를 JPEG blob으로 변환 (파일 크기 최적화)
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.85));
+        const file = new File([blob], 'ai-level-result.jpg', { type: 'image/jpeg' });
 
-        // 1. Web Share API 파일 공유 시도 (모바일 사파리, 안드로이드 크롬)
-        try {
-            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                await navigator.share({
-                    title: '나의 AI 레벨 테스트 결과',
-                    text: 'moahub.co.kr',
-                    files: [file]
-                });
-                return;
-            }
-        } catch (shareErr) {
-            if (shareErr.name === 'AbortError') return;
-            console.log('파일 공유 실패, 다른 방법 시도:', shareErr);
+        console.log('[share] Level prewarm completed, file size:', file.size);
+
+        // 캐시에 저장
+        cachedLevelShareData = {
+            file: file,
+            title: shareTitle,
+            text: shareText,
+            url: shareUrl
+        };
+
+        // 공유 버튼 상태 업데이트
+        const shareBtn = document.getElementById('shareLevelResultBtn');
+        if (shareBtn) {
+            shareBtn.querySelector('span:last-child').textContent = '결과 공유하기';
         }
 
-        // 2. 클립보드에 이미지 복사 (데스크톱 크롬 등)
-        try {
-            await navigator.clipboard.write([
-                new ClipboardItem({
-                    'image/png': blob
-                })
-            ]);
-            alert('✅ 이미지가 클립보드에 복사되었습니다!\n\n카톡, 메신저 등 원하는 곳에 붙여넣기(Ctrl+V 또는 Cmd+V) 하세요! 🎉');
-            return;
-        } catch (clipboardErr) {
-            console.log('클립보드 복사 실패:', clipboardErr);
-        }
-
-        // 3. 이미지 다운로드 폴백 (Chrome 등 공유 API 지원 안 하는 경우)
-        try {
-            const link = document.createElement('a');
-            link.download = 'ai-level-result.png';
-            link.href = canvas.toDataURL('image/png');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            alert('✅ 이미지가 저장되었습니다!\n\n갤러리에서 확인하고 공유해보세요! 🎉');
-            return;
-        } catch (downloadErr) {
-            console.log('이미지 다운로드 실패:', downloadErr);
-        }
-
-        // 4. 텍스트로 폴백
-        const levelEmoji = document.getElementById('resultEmoji').textContent;
-        const levelName = document.getElementById('resultLevel').textContent;
-        const summary = document.getElementById('resultSummary').textContent;
-        const shareText = `${levelEmoji} 나의 AI 레벨은 "${levelName}"!\n\n${summary}\n\n나도 내 AI 레벨 테스트 해보기 👉 https://moahub.co.kr`;
-
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: '나의 AI 레벨 테스트 결과',
-                    text: shareText
-                });
-            } catch (textShareErr) {
-                if (textShareErr.name !== 'AbortError') {
-                    await navigator.clipboard.writeText(shareText);
-                    alert('텍스트가 클립보드에 복사되었습니다! 🎉');
-                }
-            }
-        } else {
-            await navigator.clipboard.writeText(shareText);
-            alert('텍스트가 클립보드에 복사되었습니다! 🎉');
-        }
-
-    } catch (error) {
-        console.error('이미지 생성 실패:', error);
-        alert('이미지 생성에 실패했습니다. 다시 시도해주세요.');
+    } catch (err) {
+        console.error('[share] prepareLevelShareData failed:', err?.name, err?.message, err);
+        cachedLevelShareData = {
+            file: null,
+            title: shareTitle,
+            text: shareText,
+            url: shareUrl
+        };
     }
 }
 
-// 퀴즈 결과 공유 - 이미지로 공유 (크롬 호환)
-async function shareQuizResult() {
+// 퀴즈 결과 공유 데이터 사전 준비 (prewarm)
+async function prepareQuizShareData() {
+    console.log('[share] prepareQuizShareData starting...');
+
+    const shareUrl = 'https://ai-level-test.moahub.co.kr';
+    const emoji = document.getElementById('quizResultEmoji')?.textContent || '';
+    const level = document.getElementById('quizResultLevel')?.textContent || '';
+    const summary = document.getElementById('quizResultSummary')?.textContent || '';
+    const score = document.getElementById('quizScore')?.textContent || '';
+    const total = document.getElementById('quizTotal')?.textContent || '';
+    const descriptionEl = document.getElementById('quizResultDescription');
+    // HTML에서 텍스트만 추출 (간단한 설명)
+    const description = descriptionEl?.innerText?.substring(0, 200) || '';
+
+    const shareText = `${emoji} 나의 AI 덕후 레벨은 "${level}"!\n\n${summary}\n${score}/${total}점 달성!\n\n나도 AI 상식 퀴즈 도전하기 👉 ${shareUrl}`;
+    const shareTitle = 'AI 덕후 퀴즈 결과';
+
     try {
-        const element = document.querySelector('.quiz-result-card');
-        if (!element) {
-            alert('결과 화면을 찾을 수 없습니다.');
-            return;
-        }
+        // 캡처용 영역 데이터 채우기
+        document.getElementById('captureQuizEmoji').textContent = emoji;
+        document.getElementById('captureQuizLevel').textContent = level;
+        document.getElementById('captureQuizSummary').textContent = summary;
+        document.getElementById('captureQuizScore').textContent = score;
+        document.getElementById('captureQuizTotal').textContent = total;
+        document.getElementById('captureQuizDescription').textContent = description;
 
-        const reviewList = document.getElementById('quizReviewListInline');
-        const wasReviewVisible = reviewList && !reviewList.classList.contains('hidden');
-        if (wasReviewVisible) reviewList.classList.add('hidden');
+        // 캡처 영역 보이게 설정
+        const captureArea = document.getElementById('captureQuizArea');
+        captureArea.style.visibility = 'visible';
+        captureArea.style.left = '0';
+        captureArea.style.top = '0';
+        captureArea.style.position = 'fixed';
+        captureArea.style.zIndex = '-1';
 
-        const shareBtn = document.getElementById('shareQuizResultBtn');
-        const homeBtn = element.querySelector('.home-btn');
-        const reviewBtn = document.getElementById('quizReviewBtn');
-
-        const originalShareDisplay = shareBtn ? shareBtn.closest('.share-button-container-simple').style.display : '';
-        const originalHomeDisplay = homeBtn ? homeBtn.closest('.home-button-container').style.display : '';
-        const originalReviewDisplay = reviewBtn ? reviewBtn.closest('.result-buttons').style.display : '';
-
-        if (shareBtn) shareBtn.closest('.share-button-container-simple').style.display = 'none';
-        if (homeBtn) homeBtn.closest('.home-button-container').style.display = 'none';
-        if (reviewBtn) reviewBtn.closest('.result-buttons').style.display = 'none';
-
-        const urlOverlay = document.createElement('div');
-        urlOverlay.style.cssText = `
-            text-align: center;
-            padding: 20px;
-            margin-top: 20px;
-            font-size: 1.1rem;
-            color: #667eea;
-            font-weight: 700;
-            border-top: 2px solid #e2e8f0;
-        `;
-        urlOverlay.textContent = '🌐 moahub.co.kr';
-        element.appendChild(urlOverlay);
-
-        // Safari fix: Scroll to top prevents clipping
-        const originalScrollPos = window.scrollY;
-        window.scrollTo(0, 0);
-
-        const canvas = await html2canvas(element, {
-            scale: 2,
-            backgroundColor: '#ffffff',
-            logging: false,
-            useCORS: true,
-            allowTaint: true
+        // requestAnimationFrame 2회로 최소 대기
+        await new Promise(resolve => {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(resolve);
+            });
         });
 
-        // Restore scroll position
-        window.scrollTo(0, originalScrollPos);
+        // html2canvas로 캡처
+        const canvas = await html2canvas(captureArea, {
+            backgroundColor: null,
+            scale: 1.5,
+            useCORS: true,
+            allowTaint: false,
+            logging: false,
+            width: captureArea.offsetWidth,
+            height: captureArea.offsetHeight,
+            windowWidth: captureArea.offsetWidth,
+            windowHeight: captureArea.offsetHeight
+        });
 
-        urlOverlay.remove();
-        if (shareBtn) shareBtn.closest('.share-button-container-simple').style.display = originalShareDisplay;
-        if (homeBtn) homeBtn.closest('.home-button-container').style.display = originalHomeDisplay;
-        if (reviewBtn) reviewBtn.closest('.result-buttons').style.display = originalReviewDisplay;
-        if (wasReviewVisible && reviewList) reviewList.classList.remove('hidden');
+        // 캡처 영역 다시 숨기기
+        captureArea.style.visibility = 'hidden';
+        captureArea.style.left = '-9999px';
+        captureArea.style.position = 'fixed';
 
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-        const file = new File([blob], 'ai-quiz-result.png', { type: 'image/png' });
+        // canvas를 JPEG blob으로 변환
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.85));
+        const file = new File([blob], 'ai-quiz-result.jpg', { type: 'image/jpeg' });
 
-        // 1. Web Share API 파일 공유 시도 (모바일 사파리, 안드로이드 크롬)
-        try {
-            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                await navigator.share({
-                    title: 'AI 덕후 퀴즈 결과',
-                    text: 'moahub.co.kr',
-                    files: [file]
-                });
-                return;
-            }
-        } catch (shareErr) {
-            if (shareErr.name === 'AbortError') return;
-            console.log('파일 공유 실패, 다른 방법 시도:', shareErr);
+        console.log('[share] Quiz prewarm completed, file size:', file.size);
+
+        // 캐시에 저장
+        cachedQuizShareData = {
+            file: file,
+            title: shareTitle,
+            text: shareText,
+            url: shareUrl
+        };
+
+        // 공유 버튼 상태 업데이트
+        const shareBtn = document.getElementById('shareQuizResultBtn');
+        if (shareBtn) {
+            shareBtn.querySelector('span:last-child').textContent = '내 결과 공유하기';
         }
 
-        // 2. 클립보드에 이미지 복사 (데스크톱 크롬 등)
-        try {
-            await navigator.clipboard.write([
-                new ClipboardItem({
-                    'image/png': blob
-                })
-            ]);
-            alert('✅ 이미지가 클립보드에 복사되었습니다!\n\n카톡, 메신저 등 원하는 곳에 붙여넣기(Ctrl+V 또는 Cmd+V) 하세요! 🎉');
-            return;
-        } catch (clipboardErr) {
-            console.log('클립보드 복사 실패:', clipboardErr);
-        }
-
-        // 3. 이미지 다운로드 폴백 (Chrome 등 공유 API 지원 안 하는 경우)
-        try {
-            const link = document.createElement('a');
-            link.download = 'ai-quiz-result.png';
-            link.href = canvas.toDataURL('image/png');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            alert('✅ 이미지가 저장되었습니다!\n\n갤러리에서 확인하고 공유해보세요! 🎉');
-            return;
-        } catch (downloadErr) {
-            console.log('이미지 다운로드 실패:', downloadErr);
-        }
-
-        // 4. 텍스트로 폴백
-        const emoji = document.getElementById('quizResultEmoji').textContent;
-        const level = document.getElementById('quizResultLevel').textContent;
-        const summary = document.getElementById('quizResultSummary').textContent;
-        const score = document.getElementById('quizScore').textContent;
-        const total = document.getElementById('quizTotal').textContent;
-        const shareText = `${emoji} 나의 AI 덕후 레벨은 "${level}"!\n\n${summary}\n${score}/${total}점 달성!\n\n나도 AI 상식 퀴즈 도전하기 👉 https://moahub.co.kr`;
-
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: 'AI 덕후 퀴즈 결과',
-                    text: shareText
-                });
-            } catch (textShareErr) {
-                if (textShareErr.name !== 'AbortError') {
-                    await navigator.clipboard.writeText(shareText);
-                    alert('텍스트가 클립보드에 복사되었습니다! 🎉');
-                }
-            }
-        } else {
-            await navigator.clipboard.writeText(shareText);
-            alert('텍스트가 클립보드에 복사되었습니다! 🎉');
-        }
-
-    } catch (error) {
-        console.error('이미지 생성 실패:', error);
-        alert('이미지 생성에 실패했습니다. 다시 시도해주세요.');
+    } catch (err) {
+        console.error('[share] prepareQuizShareData failed:', err?.name, err?.message, err);
+        cachedQuizShareData = {
+            file: null,
+            title: shareTitle,
+            text: shareText,
+            url: shareUrl
+        };
     }
+}
+
+// 레벨 테스트 결과 공유
+async function shareLevelResult() {
+    const ua = navigator.userAgent;
+    const isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|Chrome/.test(ua);
+    const isIOSChrome = /CriOS/.test(ua);
+
+    console.log('[share] shareLevelResult called');
+    console.log('[share] ua:', ua);
+    console.log('[share] isSafari:', isSafari, 'isIOSChrome:', isIOSChrome);
+
+    // 캐시된 데이터가 없으면 바로 준비
+    if (!cachedLevelShareData) {
+        console.log('[share] No cached data, preparing now...');
+        await prepareLevelShareData();
+    }
+
+    const shareUrl = cachedLevelShareData?.url || 'https://ai-level-test.moahub.co.kr';
+    const shareText = cachedLevelShareData?.text || '';
+    const shareTitle = cachedLevelShareData?.title || '나의 AI 레벨 테스트 결과';
+    const file = cachedLevelShareData?.file;
+
+    console.log('[share] file exists:', !!file, 'size:', file?.size);
+
+    // Step A: 파일 공유 시도
+    if (file && navigator.share) {
+        const canShareFiles = navigator.canShare?.({ files: [file] });
+        console.log('[share] canShareFiles:', canShareFiles);
+
+        if (canShareFiles) {
+            try {
+                if (isIOSChrome) {
+                    // iOS Chrome: files-only 공유 (text 추가 시 실패할 수 있음)
+                    console.log('[share] iOS Chrome: attempting files-only share...');
+                    await navigator.share({ files: [file] });
+                    console.log('[share] iOS Chrome files-only share succeeded');
+                    return;
+                } else if (isSafari) {
+                    // iOS Safari: files + 짧은 홍보 문구
+                    console.log('[share] Safari: attempting files + text share...');
+                    await navigator.share({
+                        files: [file],
+                        text: '✨ 더 많은 콘텐츠는 moahub.co.kr 에서!'
+                    });
+                    console.log('[share] Safari files+text share succeeded');
+                    return;
+                } else {
+                    // 기타 브라우저: files + title + url
+                    console.log('[share] Other browser: attempting full share...');
+                    await navigator.share({
+                        files: [file],
+                        title: shareTitle,
+                        url: shareUrl
+                    });
+                    console.log('[share] Full share succeeded');
+                    return;
+                }
+            } catch (err) {
+                console.error('[share] step A failed:', err?.name, err?.message, err);
+                if (err.name === 'AbortError') return;
+                // 실패 시 Step B로 진행
+            }
+        }
+    }
+
+    // Step B: 텍스트/링크만 공유 시도
+    if (navigator.share) {
+        try {
+            console.log('[share] attempting text-only share...');
+            await navigator.share({
+                title: shareTitle,
+                text: shareText,
+                url: shareUrl
+            });
+            console.log('[share] text-only share succeeded');
+            return;
+        } catch (err) {
+            console.error('[share] step B (text-only) failed:', err?.name, err?.message, err);
+            if (err.name === 'AbortError') return;
+        }
+    }
+
+    // Step C: Fallback - 클립보드 복사
+    console.log('[share] falling back to clipboard...');
+    try {
+        await navigator.clipboard.writeText(shareUrl);
+        console.log('[share] clipboard copy succeeded');
+        alert('링크가 클립보드에 복사되었습니다!');
+        return;
+    } catch (clipErr) {
+        console.error('[share] step C (clipboard) failed:', clipErr?.name, clipErr?.message, clipErr);
+    }
+
+    // Step C-2: 마지막 fallback - prompt
+    prompt('아래 링크를 복사해서 공유해주세요!', shareUrl);
+}
+
+// 퀴즈 결과 공유
+async function shareQuizResult() {
+    const ua = navigator.userAgent;
+    const isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|Chrome/.test(ua);
+    const isIOSChrome = /CriOS/.test(ua);
+
+    console.log('[share] shareQuizResult called');
+    console.log('[share] ua:', ua);
+    console.log('[share] isSafari:', isSafari, 'isIOSChrome:', isIOSChrome);
+
+    // 캐시된 데이터가 없으면 바로 준비
+    if (!cachedQuizShareData) {
+        console.log('[share] No cached data, preparing now...');
+        await prepareQuizShareData();
+    }
+
+    const shareUrl = cachedQuizShareData?.url || 'https://ai-level-test.moahub.co.kr';
+    const shareText = cachedQuizShareData?.text || '';
+    const shareTitle = cachedQuizShareData?.title || 'AI 덕후 퀴즈 결과';
+    const file = cachedQuizShareData?.file;
+
+    console.log('[share] file exists:', !!file, 'size:', file?.size);
+
+    // Step A: 파일 공유 시도
+    if (file && navigator.share) {
+        const canShareFiles = navigator.canShare?.({ files: [file] });
+        console.log('[share] canShareFiles:', canShareFiles);
+
+        if (canShareFiles) {
+            try {
+                if (isIOSChrome) {
+                    console.log('[share] iOS Chrome: attempting files-only share...');
+                    await navigator.share({ files: [file] });
+                    console.log('[share] iOS Chrome files-only share succeeded');
+                    return;
+                } else if (isSafari) {
+                    console.log('[share] Safari: attempting files + text share...');
+                    await navigator.share({
+                        files: [file],
+                        text: '✨ 더 많은 콘텐츠는 moahub.co.kr 에서!'
+                    });
+                    console.log('[share] Safari files+text share succeeded');
+                    return;
+                } else {
+                    console.log('[share] Other browser: attempting full share...');
+                    await navigator.share({
+                        files: [file],
+                        title: shareTitle,
+                        url: shareUrl
+                    });
+                    console.log('[share] Full share succeeded');
+                    return;
+                }
+            } catch (err) {
+                console.error('[share] step A failed:', err?.name, err?.message, err);
+                if (err.name === 'AbortError') return;
+            }
+        }
+    }
+
+    // Step B: 텍스트/링크만 공유 시도
+    if (navigator.share) {
+        try {
+            console.log('[share] attempting text-only share...');
+            await navigator.share({
+                title: shareTitle,
+                text: shareText,
+                url: shareUrl
+            });
+            console.log('[share] text-only share succeeded');
+            return;
+        } catch (err) {
+            console.error('[share] step B (text-only) failed:', err?.name, err?.message, err);
+            if (err.name === 'AbortError') return;
+        }
+    }
+
+    // Step C: Fallback - 클립보드 복사
+    console.log('[share] falling back to clipboard...');
+    try {
+        await navigator.clipboard.writeText(shareUrl);
+        console.log('[share] clipboard copy succeeded');
+        alert('링크가 클립보드에 복사되었습니다!');
+        return;
+    } catch (clipErr) {
+        console.error('[share] step C (clipboard) failed:', clipErr?.name, clipErr?.message, clipErr);
+    }
+
+    // Step C-2: 마지막 fallback - prompt
+    prompt('아래 링크를 복사해서 공유해주세요!', shareUrl);
 }
