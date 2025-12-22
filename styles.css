@@ -112,9 +112,14 @@ body::before {
 /* 히어로 버튼 */
 .hero-buttons {
     display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 버튼 사이 광고 */
+.adfit-between-buttons {
+    margin: 2px 0;
 }
 
 .cta-button {
@@ -249,8 +254,8 @@ body::before {
     }
 
     .hero-buttons {
-        gap: 8px;
-        /* Reduced */
+        gap: 2px;
+        /* Reduced for ad placement */
     }
 
     .cta-button {
